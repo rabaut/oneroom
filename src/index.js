@@ -23,18 +23,12 @@ import { addEntity }               from './modules/entity';
 import Collision                   from './systems/collision';
 import Movement                    from './systems/movement'
 
-var socket, store, keyboard, mouse, stats, systems, stage, world, renderer, player;
+var store, keyboard, mouse, stats, systems, stage, world, renderer, player;
 
 let lastLog = Math.floor(Date.now() / 1000);
 const messageSubmitNode = document.getElementById('message-submit');
 
-setupCore();
-setupUI();
-
-function setupCore() {
-  socket = setupSocket();
-  store = setupStore();
-}
+store = setupStore();
 
 function setupStore() {
   let store = buildStore(socket);
@@ -71,14 +65,14 @@ function setupStats() {
 
 function setupGame() {
   const state = store.getState();
-  const { keybindings } = state.api.user.settings;
+  const { keybindings } = //state..settings;
   systems  = setupSystems(),
   keyboard = setupKeyboard(keybindings.game),
   mouse    = {}, // replace
   stage    = new PIXI.Container(),
   renderer = setupRenderer(),
   world    = setupWorld(),
-  player    = setupLocalPlayer({name: "God"});
+  player   = setupPlayer({name: "God"});
   store.dispatch(started());
   start();
 }
@@ -91,7 +85,7 @@ function setupWorld() {
 
 function setupRenderer() {
   PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-  const renderer = new PIXI.WebGLRenderer(800, 600);
+  const renderer = new PIXI.WebGLRenderer(800, 800);
   document.body.appendChild(renderer.view);
   return renderer;
 }
@@ -107,7 +101,7 @@ function setupSystems() {
   };
 }
 
-function setupLocalPlayer(user) {
+function setupPlayer(user) {
   let player = Entities.localPlayer(user);
   setupEntity(player);
   return player;
@@ -130,7 +124,7 @@ function setupEntity(entity) {
 function start() {
   let home = document.getElementById('home');
   requestAnimationFrame(render);
-  //update();
+  update();
   console.log('starting');
   store.dispatch(started());
 };
@@ -143,26 +137,12 @@ function update() {
   Input.update(store.dispatch, player, keyboard);
   //World.update(store.dispatch, world);
   Movement.update(store.dispatch, entities, systems.movement.entities);
-  Physics.update(store.dispatch, entities, systems.physics.entities);
-  //Collision.update(store.dispatch, entities, systems.collision.entities, world.blocks);
+  //Physics.update(store.dispatch, entities, systems.physics.entities);
+  //Collision.update(store.dispatch, entities, systems.collision.entities);
   stats.game.end();
-
-  log();
 };
 
 function render() {
   requestAnimationFrame(render);
   renderer.render(stage);
-}
-
-function parseMap(data) {
-  //console.log(JSON.parse(data));
-}
-
-function log() {
-  let now = Math.floor(Date.now() / 1000);
-  if(now > lastLog + 5) {
-    //console.log(something);
-    lastLog = now;
-  }
 }
