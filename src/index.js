@@ -36,27 +36,6 @@ function setupCore() {
   store = setupStore();
 }
 
-function setupSocket() {
-  let socket = io();
-  socket.on('connect', () => {
-    console.log('socket connected');
-  });
-  socket.on('disconnect', () => {
-    console.log('socket disconnected');
-  });
-  socket.on('authenticated', () => {
-    console.log('authenticated');
-    socket.on('chat', (action) => {
-      store.dispatch(action);
-    });
-    socket.on('update', () => {
-      console.log('update');
-    });
-  });
-
-  return socket;
-}
-
 function setupStore() {
   let store = buildStore(socket);
   store.subscribe(handleStoreChange.bind(this));
@@ -93,7 +72,6 @@ function setupStats() {
 function setupGame() {
   const state = store.getState();
   const { keybindings } = state.api.user.settings;
-  socket   = setupSocket(),
   systems  = setupSystems(),
   keyboard = setupKeyboard(keybindings.game),
   mouse    = {}, // replace
@@ -105,17 +83,10 @@ function setupGame() {
   start();
 }
 
-var room;
-var roomSprite
-var roomCount = 0;
-const NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3;
-
-
 function setupWorld() {
-  return generateWorld((room) => stage.addChild(Sprites.room(room)));
+  let world = generateWorld();
   //world.sprite = Sprites.world(world);
   //stage.addChild(world.sprite);
-
 }
 
 function setupRenderer() {
@@ -131,7 +102,6 @@ function setupSystems() {
     movement: { components: ['inputs', 'linearVelocity', 'angularVelocity'], entities: [] },
     physics: { components: ['linearVelocity', 'angularVelocity', 'rotation', 'position', 'sprite', 'collision'], entities: [] },
     collision: { components: ['position', 'collision', 'sprite'], entities: [] },
-    gravity: { components: ['gravity', 'collision', 'linearVelocity', 'position'], entities: [] },
     jump: { components: ['jump', 'inputs', 'collision'], entities: [] },
     sprite: { components: ['linearVelocity', 'angularVelocity', 'sprite'], entities: [] }
   };
@@ -142,12 +112,6 @@ function setupLocalPlayer(user) {
   setupEntity(player);
   return player;
 };
-
-function setupRemotePlayer(user) {
-  let player = Entities.remotePlayer(user);
-  setupEntity(player);
-  return player;
-}
 
 function setupEntity(entity) {
   store.dispatch(addEntity(entity, 'CLIENT'));
@@ -176,7 +140,7 @@ function update() {
   const state = store.getState();
   const { player, entities, ui } = state;
   stats.game.begin();
-  if(!ui.chatting) { Input.update(store.dispatch, player, keyboard); }
+  Input.update(store.dispatch, player, keyboard);
   //World.update(store.dispatch, world);
   Movement.update(store.dispatch, entities, systems.movement.entities);
   Physics.update(store.dispatch, entities, systems.physics.entities);

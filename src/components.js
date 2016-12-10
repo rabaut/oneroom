@@ -22,6 +22,4 @@ export const angularVelocity = (angularVelocity = [0,0])       => ({ angularVelo
 
 export const collision       = (collision = defaults.collsion) => ({ collision });
 
-export const gravity         = (gravity={})                    => ({gravity});
-
 export const jump            = (jump={active: false, start: 0}) => ({jump});
