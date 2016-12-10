@@ -122,7 +122,6 @@ function setupEntity(entity) {
 }
 
 function start() {
-  let home = document.getElementById('home');
   requestAnimationFrame(render);
   update();
   console.log('starting');
@@ -135,7 +134,7 @@ function update() {
   const { player, entities, ui } = state;
   stats.game.begin();
   Input.update(store.dispatch, player, keyboard);
-  //World.update(store.dispatch, world);
+  World.update(store.dispatch, world);
   Movement.update(store.dispatch, entities, systems.movement.entities);
   //Physics.update(store.dispatch, entities, systems.physics.entities);
   //Collision.update(store.dispatch, entities, systems.collision.entities);
