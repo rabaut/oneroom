@@ -1,4 +1,4 @@
-import { updateLinearVelocity, updateAngularVelocity } from './../modules/entity';
+import { updateLinearVelocity, updateAngularVelocity } from '../modules/entity';
 
 const speed = .2;
 const maxSpeed = 1;

@@ -91,7 +91,7 @@ function setupWorld() {
 
 function setupRenderer() {
   PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-  const renderer = new PIXI.WebGLRenderer(800, 600);
+  const renderer = new PIXI.WebGLRenderer(800, 800);
   document.body.appendChild(renderer.view);
   return renderer;
 }
@@ -128,9 +128,8 @@ function setupEntity(entity) {
 }
 
 function start() {
-  let home = document.getElementById('home');
   requestAnimationFrame(render);
-  //update();
+  update();
   console.log('starting');
   store.dispatch(started());
 };
@@ -141,13 +140,11 @@ function update() {
   const { player, entities, ui } = state;
   stats.game.begin();
   Input.update(store.dispatch, player, keyboard);
-  //World.update(store.dispatch, world);
+  World.update(store.dispatch, world);
   Movement.update(store.dispatch, entities, systems.movement.entities);
   Physics.update(store.dispatch, entities, systems.physics.entities);
-  //Collision.update(store.dispatch, entities, systems.collision.entities, world.blocks);
+  Collision.update(store.dispatch, entities, systems.collision.entities, world.blocks);
   stats.game.end();
-
-  log();
 };
 
 function render() {
@@ -159,10 +156,3 @@ function parseMap(data) {
   //console.log(JSON.parse(data));
 }
 
-function log() {
-  let now = Math.floor(Date.now() / 1000);
-  if(now > lastLog + 5) {
-    //console.log(something);
-    lastLog = now;
-  }
-}

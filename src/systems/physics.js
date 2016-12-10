@@ -1,4 +1,4 @@
-import { updatePosition } from 'shared/modules/entity';
+import { updatePosition } from '../modules/entity';
 
 const friction = .05;
 const threshold = .1;

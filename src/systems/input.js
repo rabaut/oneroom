@@ -1,4 +1,4 @@
-import { keyboardInput } from 'client/modules/player';
+import { keyboardInput } from '../modules/player';
 
 const Input = {
   update(dispatch, player, keyboard) {

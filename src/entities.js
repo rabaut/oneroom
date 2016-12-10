@@ -1,7 +1,6 @@
 import PIXI                  from 'pixi.js';
 import { generateId }        from 'shared/utils';
-import * as ClientComponents from './components';
-import * as Components       from 'shared/components';
+import * as Components from './components';
 import * as Sprites          from './sprites';
 
 export const localPlayer = user => {
@@ -19,17 +18,13 @@ export const localPlayer = user => {
   };
   return {
     id,
-    ...ClientComponents.input(inputs),
-    ...ClientComponents.sprite(sprite),
+    ...Components.input(inputs),
+    ...Components.sprite(sprite),
     ...Components.position(startingPosition),
     ...Components.rotation(),
     ...Components.linearVelocity(),
     ...Components.angularVelocity(),
     ...Components.collision(),
-    ...ClientComponents.camera()
+    ...Components.camera()
   };
 };
-
-export const remotePlayer = () => {
-  return {};
-}
