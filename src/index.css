@@ -1,0 +1,357 @@
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  position: absolute;
+  background-color: burlywood;
+}
+
+#game {
+  margin: 0 auto;
+  width: 800px;
+}
+
+#welcome {
+
+}
+
+#select-buttons {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+#player-create {
+  display: flex;
+  justify-content: center;
+}
+
+#player-select {
+
+}
+
+#players {
+  display: flex;
+  justify-content: center;
+}
+
+.player {
+  background-color: orange;
+  text-align: center;
+  margin-left: 50px;
+  width: 150px;
+  height: 200px;
+}
+
+.player div button {
+  display: none;
+}
+
+.player-selected {
+  border: 2px solid black;
+}
+
+.player-create {
+  background-color: green;
+}
+
+.player:hover {
+  opacity: .7;
+}
+
+
+/* UI */
+
+#ui {
+
+}
+
+#power-container {
+  position: absolute;
+  top: 45px;
+  left: 20px;
+  height: 25px;
+  width: 200px;
+  padding: 5px;
+  background-color: black;
+}
+
+#power {
+  text-align: center;
+  line-height: 1.5;
+  height: 100%;
+  background-color: blue;
+}
+
+#health-container {
+  top: 20px;
+  left: 20px;
+  height: 25px;
+  width: 200px;
+  padding: 5px;
+  background-color: black;
+}
+
+#health {
+  text-align: center;
+  line-height: 1.5;
+  height: 100%;
+  background-color: red;
+}
+
+#chat {
+  bottom: 20px;
+  left: 20px;
+  background-color: burlywood;
+}
+
+#messages {
+  list-style-type: none;
+  text-align: left;
+  width: 450px;
+  height: 250px;
+  margin: 0;
+  padding: 0;
+  opacity: 0.7;
+  background-color: white;
+}
+
+#message {
+  word-wrap: break-word;
+}
+
+#chat-input {
+  bottom: 0;
+  left: 0;
+  width: 444px;
+  background-color: white;
+}
+
+#inventory {
+  bottom: 20px;
+  right: 20px;
+}
+
+#inventory table {
+  background-color: black;
+}
+
+#inventory td {
+  background-color: orange;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+}
+
+#equipment {
+  bottom: 185px;
+  right: 20px;
+}
+
+#equipment table {
+  background-color: black;
+}
+
+#equipment td {
+  width: 50px;
+  height: 50px;
+  background-color: yellow;
+  text-align: center;
+}
+
+#menu-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#menu {
+  width: 200px;
+  height: 190px;
+  background-color: burlywood;
+  text-align: center;
+}
+
+#menu button {
+  width: 60%;
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+#devtools {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 170px;
+  height: 275px;
+  background-color: white;
+}
+
+#render-stats {
+  margin: 0 auto;
+}
+
+#game-stats {
+  margin: 0 auto;
+}
+
+/* Items */
+
+.item-sword {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url(http://localhost:4000/assets/textures/sword.png);
+}
+
+.item-armor {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url(http://localhost:4000/assets/textures/chest.png);
+}
+
+.cssload-container {
+  width: 108px;
+  margin: 0 auto;
+}
+
+.cssload-circle-1 {
+  height: 108px;
+  width: 108px;
+  background: rgba(97,46,141,0.85);
+}
+
+.cssload-circle-2 {
+  height: 90px;
+  width: 90px;
+  background: rgb(194,34,134);
+}
+
+.cssload-circle-3 {
+  height: 72px;
+  width: 72px;
+  background: rgb(234,34,94);
+}
+
+.cssload-circle-4 {
+  height: 54px;
+  width: 54px;
+  background: rgb(237,91,53);
+}
+
+.cssload-circle-5 {
+  height: 36px;
+  width: 36px;
+  background: rgb(245,181,46);
+}
+
+.cssload-circle-6 {
+  height: 18px;
+  width: 18px;
+  background: rgb(129,197,64);
+}
+
+.cssload-circle-7 {
+  height: 9px;
+  width: 9px;
+  background: rgb(0,163,150);
+}
+
+.cssload-circle-8 {
+  height: 4px;
+  width: 4px;
+  background: rgb(22,116,188);
+}
+
+.cssload-circle-1,
+.cssload-circle-2,
+.cssload-circle-3,
+.cssload-circle-4,
+.cssload-circle-5,
+.cssload-circle-6,
+.cssload-circle-7,
+.cssload-circle-8 {
+  border-bottom: none;
+  border-radius: 50%;
+    -o-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    -o-box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    -ms-box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    -moz-box-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+  animation-name: cssload-spin;
+    -o-animation-name: cssload-spin;
+    -ms-animation-name: cssload-spin;
+    -webkit-animation-name: cssload-spin;
+    -moz-animation-name: cssload-spin;
+  animation-duration: 2200ms;
+    -o-animation-duration: 2200ms;
+    -ms-animation-duration: 2200ms;
+    -webkit-animation-duration: 2200ms;
+    -moz-animation-duration: 2200ms;
+  animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+    -ms-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+  animation-timing-function: linear;
+    -o-animation-timing-function: linear;
+    -ms-animation-timing-function: linear;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-timing-function: linear;
+}
+
+@keyframes cssload-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@-o-keyframes cssload-spin {
+  from {
+    -o-transform: rotate(0deg);
+  }
+  to {
+    -o-transform: rotate(360deg);
+  }
+}
+
+@-ms-keyframes cssload-spin {
+  from {
+    -ms-transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes cssload-spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes cssload-spin {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
