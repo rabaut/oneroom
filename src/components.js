@@ -12,14 +12,14 @@ export const input  = (inputs = {}) => ({ inputs })
 
 export const camera = (camera = {}) => ({ camera })
 
-export const position        = (position = [0,0])              => ({ position });
+export const position        = (position = [0,0])               => ({ position });
 
-export const rotation        = (rotation = [0,0])              => ({ rotation });
+export const rotation        = (rotation = [0,0])               => ({ rotation });
 
-export const linearVelocity  = (linearVelocity = [0,0])        => ({ linearVelocity });
+export const linearVelocity  = (linearVelocity = [0,0])         => ({ linearVelocity });
 
-export const angularVelocity = (angularVelocity = [0,0])       => ({ angularVelocity });
+export const angularVelocity = (angularVelocity = [0,0])        => ({ angularVelocity });
 
-export const collision       = (collision = defaults.collsion) => ({ collision });
+export const collision       = (collision = defaults.collsion)  => ({ collision });
 
 export const jump            = (jump={active: false, start: 0}) => ({jump});
