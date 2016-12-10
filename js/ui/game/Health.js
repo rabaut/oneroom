@@ -7,8 +7,8 @@ export default class Health extends Component {
 
   render() {
     return (
-      <div id="health-container">
-        <div id="health" style={{width: `${this.props.health}%`}}>
+      <div className="container">
+        <div className="health" style={{width: `${this.props.health}%`}}>
           {this.props.health}/100
         </div>
       </div>

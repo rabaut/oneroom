@@ -1,37 +1,34 @@
 'use strict'
 
-import './index.css';
+import 'css/index.css';
 
-import React                       from 'react';
-import PIXI                        from 'pixi.js';
-import Stats                       from 'stats.js';
-import path                        from 'path';
-import { render as renderUI }      from 'react-dom';
-import { Provider }                from 'react-redux';
-import { buildStore }              from './store';
-import Root                        from './ui/root';
-import { setupKeyboard }           from './keyboard';
-import * as Entities               from './entities';
-import * as Sprites                from './sprites';
-import { started }                 from './modules/game';
-import { toggleVisibility }        from './modules/ui';
-import Input                       from './systems/input';
-import Physics                     from './systems/physics';
-import { setBlockAtWorldPosition } from './world';
-import { entityHasComponents }     from './utils';
-import { addEntity }               from './modules/entity';
-import Collision                   from './systems/collision';
-import Movement                    from './systems/movement'
+import React                   from 'react';
+import PIXI                    from 'pixi.js';
+import Stats                   from 'stats.js';
+import path                    from 'path';
+import { render as renderUI }  from 'react-dom';
+import { Provider }            from 'react-redux';
+import { buildStore }          from './store';
+import Root                    from './ui/root';
+import { setupKeyboard }       from './keyboard';
+import * as Entities           from './entities';
+import * as Sprites            from './sprites';
+import { entityHasComponents } from './utils';
+import { started }             from './modules/game';
+import { toggleVisibility }    from './modules/ui';
+import { addEntity }           from './modules/entity';
+import Input                   from './systems/input';
+import Physics                 from './systems/physics';
+import Collision               from './systems/collision';
+import Movement                from './systems/movement'
 
 var store, keyboard, mouse, stats, systems, stage, world, renderer, player;
 
-let lastLog = Math.floor(Date.now() / 1000);
-const messageSubmitNode = document.getElementById('message-submit');
-
 store = setupStore();
+setupUI();
 
 function setupStore() {
-  let store = buildStore(socket);
+  let store = buildStore();
   store.subscribe(handleStoreChange.bind(this));
   return store;
 }
@@ -66,12 +63,12 @@ function setupStats() {
 function setupGame() {
   const state = store.getState();
   const { keybindings } = //state..settings;
-  systems  = setupSystems(),
-  keyboard = setupKeyboard(keybindings.game),
-  mouse    = {}, // replace
-  stage    = new PIXI.Container(),
-  renderer = setupRenderer(),
-  world    = setupWorld(),
+  systems  = setupSystems();
+  keyboard = setupKeyboard(keybindings.game);
+  mouse    = {}; // replace
+  stage    = new PIXI.Container();
+  renderer = setupRenderer();
+  world    = setupWorld();
   player   = setupPlayer({name: "God"});
   store.dispatch(started());
   start();
@@ -86,7 +83,7 @@ function setupWorld() {
 function setupRenderer() {
   PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
   const renderer = new PIXI.WebGLRenderer(800, 800);
-  document.body.appendChild(renderer.view);
+  document.getElementById('game').appendChild(renderer.view);
   return renderer;
 }
 
@@ -108,7 +105,7 @@ function setupPlayer(user) {
 };
 
 function setupEntity(entity) {
-  store.dispatch(addEntity(entity, 'CLIENT'));
+  store.dispatch(addEntity(entity));
   for(let sys in systems) {
     let system = systems[sys];
     if(entityHasComponents(entity, system.components)) {

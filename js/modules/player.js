@@ -4,13 +4,13 @@ export const playerReducer = (state={}, action) => {
   switch(action.type) {
     case 'KEYBOARD_INPUT': 
       return { 
-        ..state, 
+        ...state, 
         inputs: { 
           ...state.inputs, 
           ...action.payload.inputs 
         }
       };
-      
+
     default: 
       return state;
   }

@@ -5,7 +5,7 @@ import { gameReducer }    from './modules/game';
 import { playerReducer }  from './modules/player';
 import { entityReducer }  from './modules/entity';
 
-export function buildStore(socket) {
+export function buildStore() {
   const rootReducer = combineReducers({
     game: gameReducer,
     player: playerReducer,

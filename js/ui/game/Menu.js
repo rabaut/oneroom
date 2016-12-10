@@ -6,7 +6,6 @@ export default class Menu extends Component {
 
     this.handleSettings = this.handleSettings.bind(this);
     this.handleMain = this.handleMain.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
     this.handleExit = this.handleExit.bind(this);
 
     this.state = {
@@ -20,10 +19,6 @@ export default class Menu extends Component {
 
   handleMain() {
     this.setState({active: 'MAIN'});
-  }
-
-  handleLogout() {
-    this.handleExit();
   }
 
   handleExit() {
@@ -44,8 +39,8 @@ export default class Menu extends Component {
       );
     }
     return (
-      <div id="menu-container">
-        <div id="menu">
+      <div className="container">
+        <div className="menu">
         {active}
         </div>
       </div>
@@ -54,7 +49,7 @@ export default class Menu extends Component {
 }
 
 const Main = props => (
-  <div id="menu-main">
+  <div className="main">
     <button onClick={props.onSettings}>Settings</button>
     <button onClick={props.onLogout}>Log Out</button>
     <button onClick={props.onExit}>Exit</button>
@@ -62,7 +57,7 @@ const Main = props => (
 );
 
 const Settings = props => (
-  <div id="menu-settings">
+  <div className="settings">
     <button onClick={props.onMain}>Main</button>
   </div>
 )

@@ -4,9 +4,9 @@ export default class Welcome extends Component {
   render() {
     return (
       <div className="container">
-        <Spinner />
-        <div id="banner">
+        <div className="banner">
           Welcome to one room
+        </div>
       </div>
     );
   }

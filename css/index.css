@@ -9,79 +9,47 @@ body {
 }
 
 .container {
-  position: absolute;
-  background-color: burlywood;
+  display: flex;
+  justify-content: center;
 }
 
-#game {
+.game {
   margin: 0 auto;
   width: 800px;
 }
 
-#welcome {
+.welcome {
 
 }
 
 /* UI */
 
-#ui {
+.ui {
 
 }
 
-#power-container {
-  position: absolute;
-  top: 45px;
-  left: 20px;
-  height: 25px;
-  width: 200px;
-  padding: 5px;
-  background-color: black;
-}
-
-#power {
-  text-align: center;
-  line-height: 1.5;
-  height: 100%;
-  background-color: blue;
-}
-
-#health-container {
-  top: 20px;
-  left: 20px;
-  height: 25px;
-  width: 200px;
-  padding: 5px;
-  background-color: black;
-}
-
-#health {
+.health {
   text-align: center;
   line-height: 1.5;
   height: 100%;
   background-color: red;
 }
 
-#menu-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#menu {
+.menu {
   width: 200px;
   height: 190px;
   background-color: burlywood;
   text-align: center;
 }
 
-#menu button {
+.menu button {
   width: 60%;
   padding: 10px;
   margin-top: 20px;
   margin-bottom: 5px;
 }
 
-#devtools {
+.devtools {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -90,11 +58,11 @@ body {
   background-color: white;
 }
 
-#render-stats {
+.render-stats {
   margin: 0 auto;
 }
 
-#game-stats {
+.game-stats {
   margin: 0 auto;
 }
 

@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect }          from 'react-redux'
-import Power                from './power';
 import Health               from './health';
 import Menu                 from './menu';
 import Dev                  from './dev';
 import { 
   toggleVisibility, 
   setVisibility, 
-} from 'client/modules/ui';
+} from '../../modules/ui';
 
 const mapStateToProps = state => ({
   visibility: state.ui.visibility,
@@ -44,7 +43,7 @@ export default class Game extends Component {
     return (
       <div>
         {visibility.menu ? <Menu {...props} /> : ''}
-        {visibility.dev ? <Dev {...props} /> : '' }
+        {visibility.dev  ? <Dev {...props} /> : ''}
       </div>
     );
   }

@@ -4,7 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    client: path.join(__dirname, 'src/index.js')
+    game: path.join(__dirname, 'js/index.js')
   },
   output: {
     path: path.join(__dirname, 'dist/'),
@@ -14,7 +14,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'assets': path.join(__dirname, 'assets')
+      'assets': path.join(__dirname, 'assets'),
+      'css': path.join(__dirname, 'css')
     },
     extensions: ['', '.js']
   },
@@ -27,7 +28,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       inject: 'body',
-      template: path.join(__dirname, 'src/index.html')
+      template: path.join(__dirname, 'index.html')
     })
   ],
   module: {
