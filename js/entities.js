@@ -4,7 +4,7 @@ import * as Components from './components';
 import * as Sprites    from './sprites';
 import { addEntity }           from './modules/entity';
 import { entityHasComponents } from './utils';
-import Rooms                   from '../rooms/first.json';
+import Rooms                   from '../rooms/rooms.json';
 import TYPES                   from './types';
 
 
@@ -13,7 +13,9 @@ export const room = (dispatch, stage) => {
   let staticContainer = new PIXI.Container();
   let itemContainer = new PIXI.Container();
 
-  let static_map = Rooms.layers["static"];
+  let layers = Rooms.rooms[rand(0, Rooms.rooms.length - 1)]["layers"]
+
+  let static_map = layers["static"];
   let ground_theme = getGroundTheme();
   let wall_theme = getWallTheme();
   static_map.forEach((row_arr, row) => {
@@ -27,7 +29,7 @@ export const room = (dispatch, stage) => {
   });
   roomContainer.addChild(staticContainer);
 
-  let object_map = Rooms.layers["object"];
+  let object_map = layers["object"];
   object_map.forEach((row_arr, row) => {
     row_arr.forEach((type, col) => {
       if (type !== " ") {
