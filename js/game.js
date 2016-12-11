@@ -40,6 +40,7 @@ export default class Game {
     PIXI.loader
       .add('creatures', '../assets/textures/sheets/creatures.json')
       .add('world', '../assets/textures/sheets/world.json')
+      .add('items', '../assets/textures/sheets/items.json')
       .load(this.setupGame);
   }
 
@@ -63,7 +64,7 @@ export default class Game {
 
   setupGame() {
     const state = this.store.getState();
-    //this.room = this.createEntity('room');
+    this.room = this.createEntity('room');
     this.player = this.createEntity('player');
     this.store.dispatch(started());
     this.startGame();
@@ -86,11 +87,7 @@ export default class Game {
   }
 
   createEntity(entityKey) {
-    let entity = Entities[entityKey]();
-    this.store.dispatch(addEntity(entity));
-    if(entityHasComponents(entity, ['sprite'])) {
-      this.stage.addChild(entity.sprite);
-    }
+    let entity = Entities[entityKey](this.store.dispatch, this.stage);
     return entity;
   }
 

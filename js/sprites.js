@@ -12,40 +12,15 @@ export function player(position) {
   return sprite;
 }
 
-export function room() {
-  let roomContainer = new PIXI.Container();
-
-  let staticContainer = new PIXI.Container();
-  let static_map = Rooms.layers["static"];
-  let ground_theme = getGroundTheme();
-  let wall_theme = getWallTheme();
-  static_map.forEach((row_arr, row) => {
-    row_arr.forEach((type, col) => {
-    	let sprite;
-    	if (type === 0) {
-    		sprite = createGroundTile(static_map, row, col, ground_theme);
-    	}
-    	else if (type === 1) {
-    		sprite = createWallTile(static_map, row, col, wall_theme);
-    	}
-      staticContainer.addChild(sprite);
-    });
-  });
-  roomContainer.addChild(staticContainer);
-
-  let object_map = Rooms.layers["object"];
-
-  return roomContainer;
-}
-
-function createGroundTile(map, row, col, theme) {
+export function groundTile(map, row, col, theme) {
 	let id = PIXI.loader.resources['world'].textures;
 	let file = "world-ground-" + theme + "-" + rand(1, 3) + ".png";
 	let sprite = new PIXI.Sprite(id[file]);
-	return setPosition(sprite, row, col);
+	sprite.position = setPosition(row,col);
+	return sprite;
 }
 
-function createWallTile(map, row, col, theme) {
+export function wallTile(map, row, col, theme) {
 	let id = PIXI.loader.resources['world'].textures;
 	let weight = 0;
 	if (checkNeighborWest(map, row, col)) {
@@ -62,8 +37,22 @@ function createWallTile(map, row, col, theme) {
 	}
 	let file = "world-wall-" + theme + "-" + weightToWallSprite(weight) + ".png";
 	let sprite = new PIXI.Sprite(id[file]);
-	return setPosition(sprite, row, col);
+	sprite.position = setPosition(row, col);
+	return sprite;
 }
+
+export function item(row, col, theme, type) {
+	let id = PIXI.loader.resources['items'].textures;
+
+	let file = "item-" + type + "-" + theme + ".png";
+	let sprite = new PIXI.Sprite(id[file]);
+	sprite.anchor.x = -0.25;
+	sprite.anchor.y = -0.25;
+	sprite.position = setPosition(row, col);
+	return sprite;
+}
+
+
 
 function weightToWallSprite(weight) {
 	let r = rand(0,10);
@@ -143,16 +132,6 @@ function checkNeighborSouth(map, row, col) {
 	return neighbor === 1;
 }
 
-function setPosition(sprite, row, col) {
-	sprite.x = 24 * col;
-	sprite.y = 24 * row;
-	return sprite;
-}
-
-function getGroundTheme() {
-	return TYPES.TILES.GROUND[rand(0, TYPES.TILES.GROUND.length - 1)];
-}
-
-function getWallTheme() {
-	return TYPES.TILES.WALL[rand(0, TYPES.TILES.WALL.length - 1)];
+function setPosition(row, col) {
+	return { x: 24 * col , y: 24 * row };
 }

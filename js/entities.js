@@ -1,25 +1,86 @@
-import PIXI            from 'pixi.js';
-import { generateId }  from './utils';
+import { generateId, rand }  from './utils';
 import { bindings }    from './keyboard';
 import * as Components from './components';
 import * as Sprites    from './sprites';
+import { addEntity }           from './modules/entity';
+import { entityHasComponents } from './utils';
+import Rooms                   from '../rooms/first.json';
+import TYPES                   from './types';
 
 
-export const room = () => {
-  const id = generateId();
-  let sprite = Sprites.room();
-  return {
-    id,
-    ...Components.sprite(sprite)
+export const room = (dispatch, stage) => {
+  let roomContainer = new PIXI.Container();
+  let staticContainer = new PIXI.Container();
+  let itemContainer = new PIXI.Container();
+
+  let static_map = Rooms.layers["static"];
+  let ground_theme = getGroundTheme();
+  let wall_theme = getWallTheme();
+  static_map.forEach((row_arr, row) => {
+    row_arr.forEach((type, col) => {
+      let entity = type === 0 
+        ? ground(static_map, row, col, ground_theme) 
+        : wall(static_map, row, col, wall_theme);
+      staticContainer.addChild(entity.sprite);
+      createEntity(entity, dispatch, stage);
+    })
+  });
+  roomContainer.addChild(staticContainer);
+
+  let object_map = Rooms.layers["object"];
+  object_map.forEach((row_arr, row) => {
+    row_arr.forEach((type, col) => {
+      if (type !== " ") {
+        let entity = item(row, col, type);
+        itemContainer.addChild(entity.sprite);
+        createEntity(entity, dispatch, stage);
+      }
+    })
+  });
+      
+
+  let roomEntity = {
+    id: generateId(),
+    ...Components.sprite(roomContainer)
   };
+  createEntity(roomEntity, dispatch, stage);
 };
 
-export const player = () => {
+const ground = (static_map, row, col, ground_theme) => {
+  let sprite = Sprites.groundTile(static_map, row, col, ground_theme);
+  let entity = {
+    id: generateId(),
+    ...Components.sprite(sprite)
+  };
+  return entity;
+}
+
+const wall = (static_map, row, col, wall_theme) => {
+  let sprite = Sprites.wallTile(static_map, row, col, wall_theme);
+  let entity = {
+    id: generateId(),
+    ...Components.collision(),
+    ...Components.sprite(sprite)
+  };
+  return entity;
+}
+
+const item = (row, col, type) => {
+  let actualType = convertItemType(type);
+  let sprite = Sprites.item(row, col, getItemTheme(actualType), actualType);
+  let entity = {
+    id: generateId(),
+    ...Components.collision(),
+    ...Components.sprite(sprite)
+  };
+  return entity;
+}
+
+export const player = (dispatch, stage) => {
   const startingPosition = [10,11];
-  const id = generateId();
   let sprite = Sprites.player(startingPosition);
-  return {
-    id,
+  let entity = {
+    id: generateId(),
     ...Components.input(),
     ...Components.sprite(sprite),
     ...Components.position(startingPosition),
@@ -29,5 +90,52 @@ export const player = () => {
     ...Components.collision(),
     ...Components.camera()
   };
+  createEntity(entity, dispatch, stage)
 };
+
+function createEntity(entity, dispatch, stage) {
+  dispatch(addEntity(entity));
+  if(entityHasComponents(entity, ['sprite'])) {
+    stage.addChild(entity.sprite);
+  }
+}
+
+function getGroundTheme() {
+  return TYPES.TILES.GROUND[rand(0, TYPES.TILES.GROUND.length - 1)];
+}
+
+function getWallTheme() {
+  return TYPES.TILES.WALL[rand(0, TYPES.TILES.WALL.length - 1)];
+}
+
+function getItemTheme(type) {
+  return TYPES.ITEMS[type][rand(0, TYPES.ITEMS[type].length - 1)];
+}
+
+function convertItemType(type) {
+  switch (type) {
+    case "a":
+      return "ball";
+    case "b":
+      return "book";
+    case "c":
+      return "coin";
+    case "d":
+      return "gem";
+    case "e":
+      return "heart";
+    case "f":
+      return "key";
+    case "g":
+      return "potion";
+    case "h":
+      return "ring";
+    case "i":
+      return "shroom";
+    case "j":
+      return "stone";
+  }
+}
+
+
 
