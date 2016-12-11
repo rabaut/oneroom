@@ -2,16 +2,11 @@ import { generateId, rand }  from './utils';
 import { bindings }    from './keyboard';
 import * as Components from './components';
 import * as Sprites    from './sprites';
-import { addEntity }           from './modules/entity';
-import { entityHasComponents } from './utils';
-import Rooms                   from '../rooms/first.json';
-import TYPES                   from './types';
+import Rooms           from '../rooms/first.json';
+import TYPES           from './types';
 
-
-export const room = (dispatch, stage) => {
-  let roomContainer = new PIXI.Container();
-  let staticContainer = new PIXI.Container();
-  let itemContainer = new PIXI.Container();
+export const room = () => {
+  let roomContainer = [];
 
   let static_map = Rooms.layers["static"];
   let ground_theme = getGroundTheme();
@@ -21,30 +16,22 @@ export const room = (dispatch, stage) => {
       let entity = type === 0 
         ? ground(static_map, row, col, ground_theme) 
         : wall(static_map, row, col, wall_theme);
-      staticContainer.addChild(entity.sprite);
-      createEntity(entity, dispatch, stage);
+      roomContainer.push(entity);
     })
   });
-  roomContainer.addChild(staticContainer);
 
   let object_map = Rooms.layers["object"];
   object_map.forEach((row_arr, row) => {
     row_arr.forEach((type, col) => {
       if (type !== " ") {
         let entity = item(row, col, type);
-        itemContainer.addChild(entity.sprite);
-        createEntity(entity, dispatch, stage);
+        roomContainer.push(entity);
       }
     })
   });
-      
 
-  let roomEntity = {
-    id: generateId(),
-    ...Components.sprite(roomContainer)
-  };
-  createEntity(roomEntity, dispatch, stage);
-};
+  return roomContainer;
+}
 
 const ground = (static_map, row, col, ground_theme) => {
   let sprite = Sprites.groundTile(static_map, row, col, ground_theme);
@@ -76,7 +63,7 @@ const item = (row, col, type) => {
   return entity;
 }
 
-export const player = (dispatch, stage) => {
+export const player = (stage) => {
   const startingPosition = [10,11];
   let sprite = Sprites.player(startingPosition);
   let entity = {
@@ -90,15 +77,9 @@ export const player = (dispatch, stage) => {
     ...Components.collision(),
     ...Components.camera()
   };
-  createEntity(entity, dispatch, stage)
-};
 
-function createEntity(entity, dispatch, stage) {
-  dispatch(addEntity(entity));
-  if(entityHasComponents(entity, ['sprite'])) {
-    stage.addChild(entity.sprite);
-  }
-}
+  return [entity];
+};
 
 function getGroundTheme() {
   return TYPES.TILES.GROUND[rand(0, TYPES.TILES.GROUND.length - 1)];
@@ -136,6 +117,3 @@ function convertItemType(type) {
       return "stone";
   }
 }
-
-
-
