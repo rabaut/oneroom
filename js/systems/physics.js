@@ -4,9 +4,9 @@ const friction = .05;
 const threshold = .1;
 
 const Physics = {
-  update(dispatch, entities, physicsEntities) {
-    physicsEntities.forEach(id => {
-      const entity = entities[id];
+  update(dispatch, physicsEntities) {
+    for(let a=0; a < physicsEntities.length; a++) {
+      const entity = physicsEntities[a];
       const { position, rotation, linearVelocity, collision } = entity;
 
       if(collision.right || collision.left || collision.top || collision.bottom ||

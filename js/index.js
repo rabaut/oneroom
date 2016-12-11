@@ -76,8 +76,8 @@ function setupGame() {
 
 function buildRoom() {
   let room = {};
-  room.sprite = 
-  //stage.addChild(world.sprite);
+
+  return room;
 }
 
 function setupRenderer() {
@@ -99,7 +99,7 @@ function setupSystems() {
 }
 
 function setupPlayer(user) {
-  let player = Entities.localPlayer(user);
+  let player = Entities.player(user);
   setupEntity(player);
   return player;
 };

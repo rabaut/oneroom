@@ -1,13 +1,10 @@
 
 import { collision } from '../modules/entity';
 
-const Collision = {
-  update(dispatch, entities, collisionEntities, world) {
-    collisionEntities.forEach(id => {
-      const entity = entities[id];
-      //const chunk = world.getChunkAt(entity.body.position).mesh;
-      const nextCollision = this.collisions(entity.mesh, [world.mesh]);
-      if(entity.collision !== collision) { // do actual deep check or some other way to know it needs to update
+export default Collision = {
+  update(dispatch, collisionEntities, world) {
+    collisionEntities.forEach(entity => {
+      if(entity.collision !== collisions(entity, possibleCollidables)) {
         dispatch(collision(id, nextCollision));
       }
     });
@@ -18,5 +15,3 @@ const Collision = {
     return collision;
   }
 }
-
-export default Collision;
