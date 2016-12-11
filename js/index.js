@@ -81,7 +81,7 @@ function buildRoom() {
 }
 
 function setupRenderer() {
-  Pixi.SCALE_MODES.DEFAULT = Pixi.SCALE_MODES.NEAREST;
+   PIXI.settings.SCALE_MODE = Pixi.SCALE_MODES.NEAREST;
   const renderer = new Pixi.WebGLRenderer(800, 800);
   document.getElementById('game').appendChild(renderer.view);
   return renderer;
