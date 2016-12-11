@@ -20,9 +20,10 @@ import { addEntity }           from './modules/entity';
 import Input                   from './systems/input';
 import Physics                 from './systems/physics';
 import Collision               from './systems/collision';
-import Movement                from './systems/movement'
+import Movement                from './systems/movement';
+import Rooms                   from '../rooms/first.json';
 
-var store, keyboard, mouse, stats, systems, stage, world, renderer, player;
+var store, keyboard, mouse, stats, systems, stage, world, renderer, room, player;
 
 store = setupStore();
 store.dispatch(start());
@@ -37,7 +38,7 @@ function setupStore() {
 function handleStoreChange() {
   const state = store.getState();
   const { starting, started } = state.game;
-  if(starting) { setupGame(); }
+  if(starting) { loadGame(); }
 }
 
 function setupUI() {
@@ -61,6 +62,12 @@ function setupStats() {
   return stats;
 }
 
+function loadGame() {
+  PIXI.loader
+    .add("../assets/textures/sheets/world.json")
+    .load(setupGame);
+}
+
 function setupGame() {
   const state = store.getState();
   systems  = setupSystems();
@@ -69,19 +76,20 @@ function setupGame() {
   stage    = new Pixi.Container();
   renderer = setupRenderer();
   room     = buildRoom();
-  player   = setupPlayer({name: "God"});
+  //player   = setupPlayer({name: "God"});
   store.dispatch(started());
   startGame();
 }
 
 function buildRoom() {
   let room = {};
-
+  room.sprite = Sprites.room(Rooms.layers);
+  stage.addChild(room.sprite);  
   return room;
 }
 
 function setupRenderer() {
-  Pixi.SCALE_MODES.DEFAULT = Pixi.SCALE_MODES.NEAREST;
+   PIXI.settings.SCALE_MODE = Pixi.SCALE_MODES.NEAREST;
   const renderer = new Pixi.WebGLRenderer(800, 800);
   document.getElementById('game').appendChild(renderer.view);
   return renderer;

@@ -24,6 +24,7 @@ const mapDispatchToProps = dispatch => ({
   dispatch
 });
 
+@connect(mapStateToProps, mapDispatchToProps)
 export default class Game extends Component {
   constructor(props) {
     super(props);

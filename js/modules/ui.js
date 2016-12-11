@@ -2,11 +2,11 @@ export const setVisibility = visibility => ({ type: 'SET_VISIBILITY', visibility
 
 export const toggleVisibility = key => ({ type: 'TOGGLE_VISIBILITY', key });
 
-const initialUI = {
+const initialState = {
   visibility: { menu: false, dev: false },
 }
 
-export const uiReducer = (state=initialUI, action) => {
+export const uiReducer = (state=initialState, action) => {
   switch(action.type) {
     case 'SET_VISIBILITY': 
       return { 
