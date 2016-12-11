@@ -4,7 +4,7 @@ export const collision = (id, collision) => ({type: 'COLLISION', id, collision }
 
 export const updateAngularVelocity = (id, angularVelocity) => ({type: 'UPDATE_ANGULAR_VELOCITY', id, angularVelocity });
 
-export const updatePosition = (id, position)  => ({type: 'UPDATE_POSITION', id, position });
+export const updatePosition = (id, position)  => ({type: 'UPDATE_POSITION', id, payload: { position} });
  
 export const updateRotation = (id, rotation)  => ({type: 'UPDATE_ROTATION', id, rotation });
 
@@ -41,7 +41,7 @@ export const entityReducer = (state = {}, action)  => {
       };
 
     case 'UPDATE_POSITION': 
-      let nextState = { 
+      return { 
         ...state, 
         [action.id]: { 
           ...state[action.id],

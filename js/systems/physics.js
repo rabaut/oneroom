@@ -12,11 +12,6 @@ export function update(dispatch, entities) {
     const entity = physicsEntities[a];
     const { position, rotation, linearVelocity, collision } = entity;
 
-    if(collision.right || collision.left || collision.top || collision.bottom ||
-       collision.front || collision.back) {
-      //return;
-    }
-
     linearVelocity[0] += (-1)*Math.sign(linearVelocity[0])*friction;
     linearVelocity[1] += (-1)*Math.sign(linearVelocity[1])*friction;
 
@@ -28,7 +23,7 @@ export function update(dispatch, entities) {
         position[0] + linearVelocity[0],
         position[1] + linearVelocity[1]
       ];
-      dispatch(updatePosition(id, newPosition));
+      dispatch(updatePosition(entity.id, newPosition));
     }
   }
 }
