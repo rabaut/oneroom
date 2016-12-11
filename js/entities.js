@@ -4,9 +4,14 @@ import { bindings }    from './keyboard';
 import * as Components from './components';
 import * as Sprites    from './sprites';
 
-export const room = () => {
-
-}
+export const room = layers => {
+  const id = generateId();
+  let sprite = Sprites.room(layers);
+  return {
+    id,
+    ...Components.sprite(sprite)
+  };
+};
 
 export const player = user => {
   const startingPosition = [10,11];

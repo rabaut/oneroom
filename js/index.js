@@ -72,16 +72,15 @@ function setupGame() {
   mouse    = {}; // replace
   stage    = new Pixi.Container();
   renderer = setupRenderer();
-  room     = buildRoom();
+  room     = setupRoom();
   //player   = setupPlayer({name: "God"});
   store.dispatch(started());
   startGame();
 }
 
-function buildRoom() {
-  let room = {};
-  room.sprite = Sprites.room(Rooms.layers);
-  stage.addChild(room.sprite);  
+function setupRoom() {
+  let room = Entities.room(Rooms.layers);
+  setupEntity(room);
   return room;
 }
 

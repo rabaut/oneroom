@@ -8,7 +8,7 @@ export const updatePosition = (id, position)  => ({type: 'UPDATE_POSITION', id, 
  
 export const updateRotation = (id, rotation)  => ({type: 'UPDATE_ROTATION', id, rotation });
 
-export const addEntity = (entity, context)  => ({type: 'ADD_ENTITY', entity, context });
+export const addEntity = (entity)  => ({type: 'ADD_ENTITY', entity});
 
 export const removeEntity = (id, context) => ({type: 'REMOVE_ENTITY', id, context });
 
