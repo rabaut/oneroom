@@ -10,31 +10,147 @@ export function player() {
 
 export function room(layers) {
   let roomContainer = new PIXI.Container();
+
   let staticContainer = new PIXI.Container();
-  let map = layers["static"];
-  let theme = getGroundTheme();
-  map.forEach((row_arr, row) => {
+  let static_map = layers["static"];
+  let ground_theme = getGroundTheme();
+  let wall_theme = getWallTheme();
+  static_map.forEach((row_arr, row) => {
     row_arr.forEach((type, col) => {
+    	let sprite;
     	if (type === 0) {
-      staticContainer.addChild(createStaticTile(map, type, row, col, theme));
+    		sprite = createGroundTile(map, row, col, ground_theme);
     	}
+    	else if (type === 1) {
+    		sprite = createWallTile(map, row, col, wall_theme);
+    	}
+      staticContainer.addChild(sprite);
     });
   });
   roomContainer.addChild(staticContainer);
+
+  let object_map = layers["object"];
+
   return roomContainer;
 }
 
-function createStaticTile(map, type, row, col, theme) {
-	let id = PIXI.loader.resources['world'].textures;
-	if (type === 0) {
-		let file = "world-ground-" + theme + "-" + rand(1, 3) + ".png";
-		let sprite = new PIXI.Sprite(id[file]);
-		sprite.x = 24 * col;
-		sprite.y = 24 * row;
-		return sprite;
+function createGroundTile(map, row, col, theme) {
+	let id = PIXI.loader.resources["../assets/textures/sheets/world.json"].textures;
+	let file = "world-ground-" + theme + "-" + rand(1, 3) + ".png";
+	let sprite = new PIXI.Sprite(id[file]);
+	return setPosition(sprite, row, col);
+}
+
+function createWallTile(map, row, col, theme) {
+	let id = PIXI.loader.resources["../assets/textures/sheets/world.json"].textures;
+	let weight = 0;
+	if (checkNeighborWest(map, row, col)) {
+		weight += 1;
 	}
+	if (checkNeighborNorth(map, row, col)) {
+		weight += 2;
+	}
+	if (checkNeighborEast(map, row, col)) {
+		weight += 4;
+	}
+	if (checkNeighborSouth(map, row, col)) {
+		weight += 8;
+	}
+	let file = "world-wall-" + theme + "-" + weightToWallSprite(weight) + ".png";
+	let sprite = new PIXI.Sprite(id[file]);
+	return setPosition(sprite, row, col);
+}
+
+function weightToWallSprite(weight) {
+	switch (weight) {
+		case 0:
+			return "1";
+		case 1:
+			return "13";
+		case 2:
+			return "16";
+		case 3:
+			return "3";
+		case 4:
+			return "11";
+		case 5:
+			// maybe 10 - 30% of the time?
+			let r = rand(0,10);
+			if (r <= 2) {
+				return "10"
+			}
+			return "12";
+		case 6:
+			return "2";
+		case 7:
+			return "8";
+		case 8:
+			return "14";
+		case 9:
+			return "18";
+		case 10:
+			// maybe 9 - 30% of the time? 
+			let r = rand(0,10);
+			if (r <= 2) {
+				return "9"
+			}
+			return "15";
+		case 11:
+			return "6";
+		case 12:
+			return "17";
+		case 13:
+			return "5";
+		case 14:
+			return "7";
+		case 15:
+			return "4";
+	}
+}
+
+function checkNeighborWest(map, row, col) {
+	if (col === 0) {
+		return false;
+	}
+	let neighbor = map[row][col - 1];
+	return neighbor === 1;
+}
+
+function checkNeighborNorth(map, row, col) {
+	if (row === 0) {
+		return false;
+>>>>>>> Added rendering of walls to map
+	}
+	let neighbor = map[row - 1][col];
+	return neighbor === 1;
+}
+
+function checkNeighborEast(map, row, col) {
+	if (col === map[0].length - 1) {
+		return false;
+	}
+	let neighbor = map[row][col + 1];
+	return neighbor === 1;
+}
+
+function checkNeighborSouth(map, row, col) {
+	if (row === map.length - 1) {
+		return false;
+	}
+	let neighbor = map[row + 1][col];
+	return neighbor === 1;
+}
+
+function setPosition(sprite, row, col) {
+	sprite.x = 24 * col;
+	sprite.y = 24 * row;
+	return sprite;
 }
 
 function getGroundTheme() {
 	return TYPES.TILES.GROUND[rand(0, TYPES.TILES.GROUND.length - 1)];
+}
+
+function getWallTheme() {
+	return TYPES.TILES.WALL[rand(0, TYPES.TILES.WALL.length - 1)];
 }

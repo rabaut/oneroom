@@ -8,9 +8,11 @@ const TYPES = {
 			"gray",
 			"lightbrown",
 		],
-    WALL: {
-      
-    }
+    WALL: [
+      "brown",
+      "gray",
+      "teal",
+    ]
   }
 };
 
