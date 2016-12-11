@@ -6,9 +6,9 @@ const TILE_SIZE = 24;
 
 export function player(position) {
   let textures = PIXI.loader.resources['creatures'].textures;
-  const sprite = new PIXI.Sprite(textures['oryx_16bit_fantasy_creatures_180.png']);
-  sprite.position.x = 0//position[0] * TILE_SIZE;
-  sprite.position.y = 0//position[1] * TILE_SIZE;
+  const sprite = new PIXI.Sprite(textures['creature-player-default-1.png']);
+  sprite.position.x = position[0] * TILE_SIZE;
+  sprite.position.y = position[1] * TILE_SIZE;
   return sprite;
 }
 
