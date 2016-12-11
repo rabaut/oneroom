@@ -3,7 +3,7 @@
 import 'css/index.css';
 
 import React                   from 'react';
-import PIXI                    from 'pixi.js';
+import * as Pixi               from 'pixi.js';
 import Stats                   from 'stats.js';
 import path                    from 'path';
 import { render as renderUI }  from 'react-dom';
@@ -66,7 +66,7 @@ function setupGame() {
   systems  = setupSystems();
   keyboard = setupKeyboard();
   mouse    = {}; // replace
-  stage    = new PIXI.Container();
+  stage    = new Pixi.Container();
   renderer = setupRenderer();
   world    = setupWorld();
   player   = setupPlayer({name: "God"});
@@ -81,8 +81,8 @@ function setupWorld() {
 }
 
 function setupRenderer() {
-  PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
-  const renderer = new PIXI.WebGLRenderer(800, 800);
+  Pixi.SCALE_MODES.DEFAULT = Pixi.SCALE_MODES.NEAREST;
+  const renderer = new Pixi.WebGLRenderer(800, 800);
   document.getElementById('game').appendChild(renderer.view);
   return renderer;
 }
