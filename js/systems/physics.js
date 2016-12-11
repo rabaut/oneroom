@@ -1,7 +1,7 @@
 import { entityHasComponents } from '../utils';
 
-const friction = .5;
-const threshold = .2;
+const friction = .80;
+const threshold = .4;
 
 const components = ['linearVelocity', 'angularVelocity', 'rotation', 'position', 'sprite', 'collision'];
 
@@ -9,6 +9,8 @@ export function update(entities) {
   return entities.map(entity => {
     if(entityHasComponents(entity, components)) {
       const { position, rotation, linearVelocity, collision } = entity;
+
+      console.log(linearVelocity);
 
       if(linearVelocity[0] === 0 && linearVelocity[1] === 0) { return entity;}
 
@@ -20,11 +22,17 @@ export function update(entities) {
       if(Math.abs(linearVelocity[1]) < threshold) { linearVelocity[1] = 0; }
 
       if(linearVelocity[0] !== 0 || linearVelocity[1] !== 0) {
-          entity.position[0] += linearVelocity[0];
-          entity.position[1] += linearVelocity[1];
-          //debugger;
-          entity.sprite.position.x += linearVelocity[0];
-          entity.sprite.position.y += linearVelocity[1];
+          let x = linearVelocity[0];
+          let y = linearVelocity[1];
+          let len = (x * x) + (y * y);
+          let s = Math.sqrt(len);
+          x = x / s;
+          y = y / s;
+          entity.position[0] += x * 1;
+          entity.position[1] += y * 1;
+          
+          entity.sprite.position.x += x * 1;
+          entity.sprite.position.y += y * 1;
       }
     }
     return entity;

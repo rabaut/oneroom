@@ -1,7 +1,7 @@
 import { entityHasComponents } from '../utils';
 
-const acceleration = .6;
-const maxSpeed = 30;
+const acceleration = 2.1;
+const maxSpeed = 9;
 
 const components = ['inputs', 'linearVelocity', 'angularVelocity'];
 
