@@ -2,8 +2,6 @@ import { generateId, rand }  from './utils';
 import { bindings }    from './keyboard';
 import * as Components from './components';
 import * as Sprites    from './sprites';
-<<<<<<< HEAD
-import Rooms           from '../rooms/first.json';
 import TYPES           from './types';
 import { entityHasComponents } from './utils';
 import Rooms                   from '../rooms/rooms.json';

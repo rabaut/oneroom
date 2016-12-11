@@ -8,7 +8,6 @@ import Root                    from './ui/root';
 import Keyboard                from './keyboard';
 import * as Entities           from './entities';
 import * as Sprites            from './sprites';
-import Rooms                   from '../rooms/first.json';
 import { 
   Input, Physics, Collision, Movement
 } from './systems';
@@ -60,7 +59,7 @@ export default class Game {
 
   setupGame() {
     console.log('loaded game');
-    //this.createEntity('room');
+    this.createEntity('room');
     this.createEntity('player');
     this.startGame();
   }
