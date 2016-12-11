@@ -11,7 +11,6 @@ import {
 
 const mapStateToProps = state => ({
   visibility: state.ui.visibility,
-  player: state.player,
 });
 
 const mapDispatchToProps = dispatch => ({

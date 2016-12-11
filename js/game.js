@@ -63,7 +63,7 @@ export default class Game {
 
   setupGame() {
     const state = this.store.getState();
-    this.room = this.createEntity('room');
+    //this.room = this.createEntity('room');
     this.player = this.createEntity('player');
     this.store.dispatch(started());
     this.startGame();
@@ -97,10 +97,10 @@ export default class Game {
   update() {
     setTimeout(this.update, 16);
     const state = this.store.getState();
-    const { player, entities, ui } = state;
+    const { entities } = state;
     this.stats.game.begin();
-    //Input.update(store.dispatch, player, keyboard);
-    //Movement.update(this.store.dispatch, Object.values(entities));
+    Input.update(this.store.dispatch, Object.values(entities), this.keyboard);
+    Movement.update(this.store.dispatch, Object.values(entities));
     //Physics.update(this.store.dispatch, Object.values(entities));
     //Collision.update(this.store.dispatch, Object.values(entities));
     this.stats.game.end();

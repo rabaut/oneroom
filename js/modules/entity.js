@@ -12,6 +12,8 @@ export const addEntity = (entity)  => ({type: 'ADD_ENTITY', entity});
 
 export const removeEntity = (id, context) => ({type: 'REMOVE_ENTITY', id, context });
 
+export const keyboardInput = (id, inputs) => ({ type: 'KEYBOARD_INPUT', payload: { id, inputs } });
+
 export const entityReducer = (state = {}, action)  => {
   switch(action.type) {
     case 'ADD_ENTITY': 
@@ -68,6 +70,18 @@ export const entityReducer = (state = {}, action)  => {
         [action.id]: { 
           ...state[action.id], 
           collision: action.collision 
+        }
+      };
+
+    case 'KEYBOARD_INPUT': 
+      return { 
+        ...state,
+        [action.payload.id]: {
+          ...state[action.payload.id],
+          inputs: { 
+            ...state[action.payload.id].inputs, 
+            ...action.payload.inputs 
+          }
         }
       };
 

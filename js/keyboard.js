@@ -30,4 +30,8 @@ export default class Keyboard {
       }
     }, false);
   }
+
+  active(key) {
+    return this.keys[key];
+  }
 }
