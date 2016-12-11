@@ -1,16 +1,16 @@
-export default class Keyboard {
-  static bindings = {
-    ui: {
-      toggleMenu: 'M'
-    },
-    game: {
-      moveUp: 'W',
-      moveDown: 'S',
-      moveLeft: 'A',
-      moveRight: 'D'
-    }
-  };
+export const bindings = {
+  ui: {
+    toggleMenu: 'M'
+  },
+  game: {
+    moveUp: 'W',
+    moveDown: 'S',
+    moveLeft: 'A',
+    moveRight: 'D'
+  }
+}
 
+export default class Keyboard {
   constructor() {
     this.keys = {};
     

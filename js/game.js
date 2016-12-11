@@ -5,6 +5,7 @@ import path                    from 'path';
 import { render as renderUI }  from 'react-dom';
 import { Provider }            from 'react-redux';
 import { buildStore }          from './store';
+import { entityHasComponents } from './utils';
 import Root                    from './ui/root';
 import Keyboard                from './keyboard';
 import * as Entities           from './entities';
@@ -25,8 +26,12 @@ export default class Game {
     this.stage = new Pixi.Container();
     this.renderer = this.setupRenderer();
 
-    this.room = this.createEntity('room');
-    this.player = this.createEntity('player');
+    this.room = null;
+    this.player = null;
+
+    this.setupGame = this.setupGame.bind(this);
+    this.update = this.update.bind(this);
+    this.render = this.render.bind(this);
 
     this.startUI();
   }
@@ -35,7 +40,7 @@ export default class Game {
     PIXI.loader
       .add('creatures', '../assets/textures/sheets/creatures.json')
       .add('world', '../assets/textures/sheets/world.json')
-      .load(setupGame);
+      .load(this.setupGame);
   }
 
   setupStats() {
@@ -56,20 +61,12 @@ export default class Game {
     return renderer;
   }
 
-  createEntity(entityKey) {
-    let entity = Entities[entityKey]();
-    this.store.dispatch(addEntity(entity));
-    if(entityHasComponents['sprite']) {
-      stage.addChild(entity.sprite);
-    }
-    return entity;
-  }
-
   setupGame() {
     const state = this.store.getState();
-    player   = setupPlayer();
+    this.room = this.createEntity('room');
+    this.player = this.createEntity('player');
     this.store.dispatch(started());
-    startGame();
+    this.startGame();
   }
 
   startUI() {
@@ -88,20 +85,29 @@ export default class Game {
     this.store.dispatch(started());
   }
 
+  createEntity(entityKey) {
+    let entity = Entities[entityKey]();
+    this.store.dispatch(addEntity(entity));
+    if(entityHasComponents(entity, ['sprite'])) {
+      this.stage.addChild(entity.sprite);
+    }
+    return entity;
+  }
+
   update() {
-    setTimeout(this.update.bind(this), 16);
+    setTimeout(this.update, 16);
     const state = this.store.getState();
     const { player, entities, ui } = state;
-    stats.game.begin();
+    this.stats.game.begin();
     //Input.update(store.dispatch, player, keyboard);
-    Movement.update(this.store.dispatch, Object.values(entities));
-    Physics.update(this.store.dispatch, Object.values(entities));
-    Collision.update(this.store.dispatch, Object.values(entities));
-    stats.game.end();
+    //Movement.update(this.store.dispatch, Object.values(entities));
+    //Physics.update(this.store.dispatch, Object.values(entities));
+    //Collision.update(this.store.dispatch, Object.values(entities));
+    this.stats.game.end();
   }
 
   render() {
-    requestAnimationFrame(render);
-    renderer.render(stage);
+    requestAnimationFrame(this.render);
+    this.renderer.render(this.stage);
   }
 }
