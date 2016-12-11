@@ -13,7 +13,6 @@ import * as Sprites            from './sprites';
 import { start, started }      from './modules/game';
 import { toggleVisibility }    from './modules/ui';
 import { addEntity }           from './modules/entity';
-import Rooms                   from '../rooms/first.json';
 import { 
   Input, Physics, Collision, Movement
 } from './systems';

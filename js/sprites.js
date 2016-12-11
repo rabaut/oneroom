@@ -1,6 +1,6 @@
 import { rand } from './utils';
 import TYPES from './types';
-import Rooms from '../rooms/first.json';
+
 
 const TILE_SIZE = 24;
 
