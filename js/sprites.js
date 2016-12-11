@@ -12,10 +12,11 @@ export function room(layers) {
   let roomContainer = new PIXI.Container();
   let staticContainer = new PIXI.Container();
   let map = layers["static"];
-  map.forEach(row => {
-    row.forEach((type, col) => {
+  let theme = getGroundTheme();
+  map.forEach((row_arr, row) => {
+    row_arr.forEach((type, col) => {
     	if (type === 0) {
-      staticContainer.addChild(createStaticTile(map, type, row, col));
+      staticContainer.addChild(createStaticTile(map, type, row, col, theme));
     	}
     });
   });
@@ -23,11 +24,14 @@ export function room(layers) {
   return roomContainer;
 }
 
-function createStaticTile(map, type, row, col) {
+function createStaticTile(map, type, row, col, theme) {
 	let id = PIXI.loader.resources["../assets/textures/sheets/world.json"].textures;
 	if (type === 0) {
-		let file = "world-ground-" + getGroundTheme() + "-" + rand(1, 3) + ".png";
-		return new PIXI.Sprite(id[file]);
+		let file = "world-ground-" + theme + "-" + rand(1, 3) + ".png";
+		let sprite = new PIXI.Sprite(id[file]);
+		sprite.x = 24 * col;
+		sprite.y = 24 * row;
+		return sprite;
 	}
 }
 
