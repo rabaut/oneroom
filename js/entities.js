@@ -4,22 +4,20 @@ import { bindings }    from './keyboard';
 import * as Components from './components';
 import * as Sprites    from './sprites';
 
-export const room = layers => {
+
+export const room = () => {
   const id = generateId();
-  let sprite = Sprites.room(layers);
+  let sprite = Sprites.room();
   return {
     id,
     ...Components.sprite(sprite)
   };
 };
 
-export const player = user => {
+export const player = () => {
   const startingPosition = [10,11];
-  const name = user.name;
   const id = generateId();
-  let sprite = Sprites.player();
-  sprite.position.x = startingPosition[0];
-  sprite.position.y = startingPosition[1];
+  let sprite = Sprites.player(startingPosition);
   return {
     id,
     ...Components.input(),

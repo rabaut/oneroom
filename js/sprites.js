@@ -1,18 +1,22 @@
-
 import { rand } from './utils';
 import TYPES from './types';
+import Rooms from '../rooms/first.json';
 
+const TILE_SIZE = 24;
 
-export function player() {
-  //const sprite = new PIXI.Sprite(texture);
-  //return sprite;
+export function player(position) {
+  let textures = PIXI.loader.resources['creatures2'].textures;
+  const sprite = new PIXI.Sprite(textures['oryx_16bit_fantasy_creatures_180.png']);
+  sprite.position.x = position[0] * TILE_SIZE;
+  sprite.position.y = position[1] * TILE_SIZE;
+  return sprite;
 }
 
-export function room(layers) {
+export function room() {
   let roomContainer = new PIXI.Container();
 
   let staticContainer = new PIXI.Container();
-  let static_map = layers["static"];
+  let static_map = Rooms.layers["static"];
   let ground_theme = getGroundTheme();
   let wall_theme = getWallTheme();
   static_map.forEach((row_arr, row) => {
@@ -29,7 +33,7 @@ export function room(layers) {
   });
   roomContainer.addChild(staticContainer);
 
-  let object_map = layers["object"];
+  let object_map = Rooms.layers["object"];
 
   return roomContainer;
 }
