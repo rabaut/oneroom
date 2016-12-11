@@ -14,16 +14,18 @@
   "license": "MIT",
   "dependencies": {
     "moment": "^2.14.1",
+    "ndarray": "^1.0.18",
+    "ndarray-pack": "^1.2.0",
     "path": "^0.12.7",
-    "pixi.js": "^4.0.0-rc3",
-    "react": "^15.1.0",
-    "react-dom": "^15.1.0",
-    "react-redux": "^4.4.5",
+    "pixi.js": "^4.2.3",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-redux": "^4.4.6",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
-    "stats.js": "^0.16.0"
-  },
-  "devDependencies": {
+    "reselect": "^2.5.3",
+    "stats.js": "^0.16.0",
+    "webpack": "^1.14.0",
     "babel-cli": "^6.10.1",
     "babel-core": "^6.9.1",
     "babel-loader": "^6.2.4",
@@ -39,11 +41,11 @@
     "html-webpack-plugin": "^2.19.0",
     "ify-loader": "^1.0.3",
     "json-loader": "^0.5.4",
-    "nodemon": "^1.9.2",
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
     "transform-loader": "^0.2.3",
-    "url-loader": "^0.5.7",
-    "webpack": "^1.13.1"
+    "url-loader": "^0.5.7"
+  },
+  "devDependencies": {
   }
 }
