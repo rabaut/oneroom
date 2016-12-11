@@ -3,9 +3,11 @@ const TYPES = {
     DOOR: {
       onClick: function() {}
     },
-    GROUND: {
-
-    },
+    GROUND: [
+			"darkbrown",
+			"gray",
+			"lightbrown",
+		],
     WALL: {
       
     }
