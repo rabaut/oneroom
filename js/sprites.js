@@ -1,11 +1,15 @@
 export function player() {
-  /*const texture = PIXI.Texture.fromImage('assets/textures/hero.png');
   const sprite = new PIXI.Sprite(texture);
   return sprite;*/
 }
 
-export function room(room) {
-  /*const texture = PIXI.Texture.fromImage('assets/textures/shield.png');
-  let spriteContainer = new PIXI.Container();
+export function room(layers) {
+  let roomContainer = new PIXI.Container();
+  let staticContainer = new PIXI.Container();
+  layers["static"].forEach(row => {
+    row.forEach(type => {
+      staticContainer.addChild(sprite);
+    });
+  });
   return spriteContainer;*/
 }
