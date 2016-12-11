@@ -14,8 +14,6 @@
   "license": "MIT",
   "dependencies": {
     "moment": "^2.14.1",
-    "ndarray": "^1.0.18",
-    "ndarray-pack": "^1.2.0",
     "path": "^0.12.7",
     "pixi.js": "^4.0.0-rc3",
     "react": "^15.1.0",
@@ -23,7 +21,6 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
-    "reselect": "^2.5.3",
     "stats.js": "^0.16.0"
   },
   "devDependencies": {
