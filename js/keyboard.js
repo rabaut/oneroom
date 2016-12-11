@@ -1,15 +1,26 @@
-export function setupKeyboard(keybindings) {
+export const bindings = {
+  ui: {
+    toggleMenu: 'M'
+  },
+  game: {
+
+  }
+};
+
+export function setupKeyboard() {
   let keyboard = { keys: {} };
+
   window.addEventListener("keydown", event => {
-    for(let key in keybindings) {
-      if(keybindings[key] === event.key) {
+    for(let key in bindings.game) {
+      if(bindings.game[key] === event.key) {
         keyboard.keys[event.key] = true;
       }
     }
   }, false);
+
   window.addEventListener("keyup", event => {
-    for(let key in keybindings) {
-      if(keybindings[key] === event.key) {
+    for(let key in bindings.game) {
+      if(bindings.game[key] === event.key) {
         keyboard.keys[event.key] = false;
       }
     }

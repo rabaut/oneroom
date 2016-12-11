@@ -3,6 +3,7 @@ import { connect }          from 'react-redux'
 import Health               from './health';
 import Menu                 from './menu';
 import Dev                  from './dev';
+import { bindings }         from '../../keyboard';
 import { 
   toggleVisibility, 
   setVisibility, 
@@ -11,7 +12,6 @@ import {
 const mapStateToProps = state => ({
   visibility: state.ui.visibility,
   player: state.player,
-  keybindings: state.api.user.settings.keybindings.ui,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -32,8 +32,7 @@ export default class Game extends Component {
   }
 
   handleKeyDown(event) {
-    const { keybindings } = this.props;
-    if(event.key === keybindings.toggleMenu) {
+    if(event.key === bindings.ui.toggleMenu) {
       this.props.toggleVisibility('menu');
     }
   }

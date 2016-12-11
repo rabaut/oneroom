@@ -14,7 +14,7 @@ import { setupKeyboard }       from './keyboard';
 import * as Entities           from './entities';
 import * as Sprites            from './sprites';
 import { entityHasComponents } from './utils';
-import { started }             from './modules/game';
+import { start, started }      from './modules/game';
 import { toggleVisibility }    from './modules/ui';
 import { addEntity }           from './modules/entity';
 import Input                   from './systems/input';
@@ -25,6 +25,7 @@ import Movement                from './systems/movement'
 var store, keyboard, mouse, stats, systems, stage, world, renderer, player;
 
 store = setupStore();
+store.dispatch(start());
 setupUI();
 
 function setupStore() {
@@ -62,16 +63,15 @@ function setupStats() {
 
 function setupGame() {
   const state = store.getState();
-  const { keybindings } = //state..settings;
   systems  = setupSystems();
-  keyboard = setupKeyboard(keybindings.game);
+  keyboard = setupKeyboard();
   mouse    = {}; // replace
   stage    = new PIXI.Container();
   renderer = setupRenderer();
   world    = setupWorld();
   player   = setupPlayer({name: "God"});
   store.dispatch(started());
-  start();
+  startGame();
 }
 
 function setupWorld() {
@@ -118,7 +118,7 @@ function setupEntity(entity) {
   }
 }
 
-function start() {
+function startGame() {
   requestAnimationFrame(render);
   update();
   console.log('starting');
