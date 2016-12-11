@@ -6,9 +6,15 @@ const defaults = {
   }
 };
 
+function gameInputs() {
+  return Object.keys(bindings.game).reduce((memo, action) => {
+    memo[action] = { key: bindings.game[action], active: false };
+  }, {});
+}
+
 export const sprite = (sprite = {}) => ({ sprite })
 
-export const input  = (inputs = {}) => ({ inputs })
+export const input  = (inputs = gameInputs) => ({ inputs })
 
 export const camera = (camera = {}) => ({ camera })
 

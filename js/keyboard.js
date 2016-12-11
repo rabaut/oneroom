@@ -3,7 +3,10 @@ export const bindings = {
     toggleMenu: 'M'
   },
   game: {
-
+    moveUp: 'W',
+    moveDown: 'S',
+    moveLeft: 'A',
+    moveRight: 'D'
   }
 };
 
