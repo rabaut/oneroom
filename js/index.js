@@ -13,15 +13,13 @@ import Root                    from './ui/root';
 import { setupKeyboard }       from './keyboard';
 import * as Entities           from './entities';
 import * as Sprites            from './sprites';
-import { entityHasComponents } from './utils';
 import { start, started }      from './modules/game';
 import { toggleVisibility }    from './modules/ui';
 import { addEntity }           from './modules/entity';
-import Input                   from './systems/input';
-import Physics                 from './systems/physics';
-import Collision               from './systems/collision';
-import Movement                from './systems/movement';
 import Rooms                   from '../rooms/first.json';
+import { 
+  Input, Physics, Collision, Movement
+} from './systems';
 
 var store, keyboard, mouse, stats, systems, stage, world, renderer, room, player;
 
@@ -64,13 +62,12 @@ function setupStats() {
 
 function loadGame() {
   PIXI.loader
-    .add("../assets/textures/sheets/world.json")
+    .add('world', 'http://localhost:8080/assets/textures/sheets/world.json')
     .load(setupGame);
 }
 
 function setupGame() {
   const state = store.getState();
-  systems  = setupSystems();
   keyboard = setupKeyboard();
   mouse    = {}; // replace
   stage    = new Pixi.Container();
@@ -95,17 +92,6 @@ function setupRenderer() {
   return renderer;
 }
 
-function setupSystems() {
-  return {
-    input: { components: ['inputs'], entities: [] },
-    movement: { components: ['inputs', 'linearVelocity', 'angularVelocity'], entities: [] },
-    physics: { components: ['linearVelocity', 'angularVelocity', 'rotation', 'position', 'sprite', 'collision'], entities: [] },
-    collision: { components: ['position', 'collision', 'sprite'], entities: [] },
-    jump: { components: ['jump', 'inputs', 'collision'], entities: [] },
-    sprite: { components: ['linearVelocity', 'angularVelocity', 'sprite'], entities: [] }
-  };
-}
-
 function setupPlayer(user) {
   let player = Entities.player(user);
   setupEntity(player);
@@ -114,16 +100,6 @@ function setupPlayer(user) {
 
 function setupEntity(entity) {
   store.dispatch(addEntity(entity));
-  for(let sys in systems) {
-    let system = systems[sys];
-    if(entityHasComponents(entity, system.components)) {
-      system.entities.push(entity.id);
-      /*if(system === systems.sprite) {
-        stage.addChild(entity.sprite);
-        stage.children.sort((a,b) => (b.zIndex - a.zIndex));
-      }*/
-    }
-  }
 }
 
 function startGame() {
@@ -140,9 +116,9 @@ function update() {
   stats.game.begin();
   Input.update(store.dispatch, player, keyboard);
   World.update(store.dispatch, world);
-  Movement.update(store.dispatch, entities, systems.movement.entities);
-  //Physics.update(store.dispatch, entities, systems.physics.entities);
-  //Collision.update(store.dispatch, entities, systems.collision.entities);
+  Movement.update(store.dispatch, entities);
+  Physics.update(store.dispatch, entities);
+  Collision.update(store.dispatch, entities);
   stats.game.end();
 };
 

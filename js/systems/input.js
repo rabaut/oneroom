@@ -11,4 +11,5 @@ export function update(dispatch, player, keyboard) {
     }
   });
   if(nextInputs) { dispatch(keyboardInput(nextInputs)); }
-};
+}
+

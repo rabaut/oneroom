@@ -25,7 +25,7 @@ export function room(layers) {
 }
 
 function createStaticTile(map, type, row, col, theme) {
-	let id = PIXI.loader.resources["../assets/textures/sheets/world.json"].textures;
+	let id = PIXI.loader.resources['world'].textures;
 	if (type === 0) {
 		let file = "world-ground-" + theme + "-" + rand(1, 3) + ".png";
 		let sprite = new PIXI.Sprite(id[file]);

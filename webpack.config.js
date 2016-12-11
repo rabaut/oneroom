@@ -41,7 +41,7 @@ module.exports = {
       },
       { test: /\.css$/, loader: "style!css"},
       { test: /\.json$/, loader: 'json' },
-      { test: /\.(png|jpg)$/, loader: 'url?limit=25000'}
+      { test: /\.(png|jpg)$/, loader: 'file-loader?name=[path][name].[ext]' }
     ],
     postLoaders: [
       {
