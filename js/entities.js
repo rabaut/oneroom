@@ -2,13 +2,18 @@ import { generateId, rand }  from './utils';
 import { bindings }    from './keyboard';
 import * as Components from './components';
 import * as Sprites    from './sprites';
+<<<<<<< HEAD
 import Rooms           from '../rooms/first.json';
 import TYPES           from './types';
+import { entityHasComponents } from './utils';
+import Rooms                   from '../rooms/rooms.json';
 
 export const room = () => {
   let roomContainer = [];
 
-  let static_map = Rooms.layers["static"];
+  let layers = Rooms.rooms[rand(0, Rooms.rooms.length - 1)]["layers"]
+
+  let static_map = layers["static"];
   let ground_theme = getGroundTheme();
   let wall_theme = getWallTheme();
   static_map.forEach((row_arr, row) => {
@@ -20,7 +25,7 @@ export const room = () => {
     })
   });
 
-  let object_map = Rooms.layers["object"];
+  let object_map = layers["object"];
   object_map.forEach((row_arr, row) => {
     row_arr.forEach((type, col) => {
       if (type !== " ") {
