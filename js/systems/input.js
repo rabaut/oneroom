@@ -14,6 +14,8 @@ export function update(dispatch, entities, keyboard) {
       nextInputs[action] = {...input, active: keyboardActive};
     }
   });
-  if(nextInputs) { dispatch(keyboardInput(entity.id, nextInputs)); }
+  if(Object.keys(nextInputs).length > 0) { 
+    dispatch(keyboardInput(entity.id, nextInputs)); 
+  }
 }
 

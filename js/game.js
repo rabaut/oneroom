@@ -64,7 +64,7 @@ export default class Game {
 
   setupGame() {
     const state = this.store.getState();
-    this.room = this.createEntity('room');
+    //this.room = this.createEntity('room');
     this.player = this.createEntity('player');
     this.store.dispatch(started());
     this.startGame();
@@ -98,13 +98,25 @@ export default class Game {
     this.stats.game.begin();
     Input.update(this.store.dispatch, Object.values(entities), this.keyboard);
     Movement.update(this.store.dispatch, Object.values(entities));
-    //Physics.update(this.store.dispatch, Object.values(entities));
+    Physics.update(this.store.dispatch, Object.values(entities));
     //Collision.update(this.store.dispatch, Object.values(entities));
     this.stats.game.end();
   }
 
   render() {
     requestAnimationFrame(this.render);
+    const state = this.store.getState();
+    const { entities } = state;
+    for (var i = this.stage.children.length - 1; i >= 0; i--) {  
+      this.stage.removeChild(this.stage.children[i]);
+    }
+    
+    Object.keys(entities).forEach(id => {
+      const entity = entities[id];
+      if(entityHasComponents(entity, ['sprite'])) {
+        this.stage.addChild(entity.sprite);
+      }
+    });
     this.renderer.render(this.stage);
   }
 }

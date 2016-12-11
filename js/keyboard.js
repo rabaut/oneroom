@@ -1,12 +1,12 @@
 export const bindings = {
   ui: {
-    toggleMenu: 'M'
+    toggleMenu: 'm'
   },
   game: {
-    moveUp: 'W',
-    moveDown: 'S',
-    moveLeft: 'A',
-    moveRight: 'D'
+    moveUp: 'w',
+    moveDown: 's',
+    moveLeft: 'a',
+    moveRight: 'd'
   }
 }
 
@@ -32,6 +32,6 @@ export default class Keyboard {
   }
 
   active(key) {
-    return this.keys[key];
+    return !!this.keys[key];
   }
 }

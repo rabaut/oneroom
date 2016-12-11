@@ -1,9 +1,10 @@
 import { combineReducers, compose, applyMiddleware, createStore } from 'redux';
-import thunkMiddleware    from 'redux-thunk'
-import gameMiddleware     from './middleware/game';
-import { uiReducer }      from './modules/ui';
-import { gameReducer }    from './modules/game';
-import { entityReducer }  from './modules/entity';
+import thunkMiddleware      from 'redux-thunk'
+import gameMiddleware       from './middleware/game';
+import { loggerMiddleware } from './middleware/logger';
+import { uiReducer }        from './modules/ui';
+import { gameReducer }      from './modules/game';
+import { entityReducer }    from './modules/entity';
 
 export function buildStore(game) {
   const rootReducer = combineReducers({
@@ -13,7 +14,7 @@ export function buildStore(game) {
   });
 
   return compose(
-    applyMiddleware(thunkMiddleware, gameMiddleware(game)),
+    applyMiddleware(thunkMiddleware, gameMiddleware(game), loggerMiddleware),
     window.devToolsExtension ? window.devToolsExtension() : f => f
   )(createStore)(rootReducer);
 }
