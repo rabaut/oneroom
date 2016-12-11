@@ -62,7 +62,7 @@ function setupStats() {
 
 function loadGame() {
   PIXI.loader
-    .add('world', 'http://localhost:8080/assets/textures/sheets/world.json')
+    .add('world', '../assets/textures/sheets/world.json')
     .load(setupGame);
 }
 
