@@ -26,9 +26,15 @@ export const room = () => {
   });
 
   let object_map = layers["object"];
+
+  let creatureType = getCreatureType();
   object_map.forEach((row_arr, row) => {
     row_arr.forEach((type, col) => {
-      if (type !== " ") {
+      if(type === 'z') {
+        let entity = creature(row, col, creatureType);
+        roomContainer.push(entity);
+      }
+      else if (type !== " ") {
         let entity = item(row, col, type);
         roomContainer.push(entity);
       }
@@ -80,6 +86,20 @@ const item = (row, col, type) => {
   return entity;
 }
 
+const creature = (row, col, type) => {
+  let sprite = Sprites.creature(row, col, type, getCreatureColor(type));
+  let entity = {
+    id: generateId(),
+    type: 'creature',
+    ...Components.sprite(sprite),
+    ...Components.width(sprite.width),
+    ...Components.height(sprite.height),
+    ...Components.position([sprite.x, sprite.y]),
+    ...Components.collision()
+  };
+  return entity;
+}
+
 export const player = (stage) => {
   const startingPosition = [10*TILE_SIZE, 11*TILE_SIZE];
   let sprite = Sprites.player(startingPosition);
@@ -111,6 +131,14 @@ function getWallTheme() {
 
 function getItemTheme(type) {
   return TYPES.ITEMS[type][rand(0, TYPES.ITEMS[type].length - 1)];
+}
+
+function getCreatureType() {
+  return Object.keys(TYPES.ENEMIES)[rand(0, Object.keys(TYPES.ENEMIES).length -1)];
+}
+
+function getCreatureColor(type) {
+  return TYPES.ENEMIES[type][rand(0, TYPES.ENEMIES[type].length -1)];
 }
 
 function convertItemType(type) {

@@ -14,6 +14,30 @@ const TYPES = {
       "teal",
     ]
   },
+  ENEMIES: {
+    demon: [
+      "blue",
+      "red",
+      "green"
+    ],
+    troll: [
+      "brown",
+      "green",
+      "red",
+      "white"
+    ],
+    bat: [
+      "red",
+      "black"
+    ],
+    golem: [
+      "black",
+      "brown",
+      "gray",
+      "tan",
+      "white"
+    ]
+  },
   ITEMS: {
     ball: [
       "blue",

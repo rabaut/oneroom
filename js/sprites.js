@@ -53,7 +53,13 @@ export function item(row, col, theme, type) {
 	return sprite;
 }
 
-
+export function creature(row, col, type, color) {
+	let id = PIXI.loader.resources['creatures'].textures;
+	let file = "creature-" + type + "-" + color + "-1.png";
+	let sprite = new PIXI.Sprite(id[file]);
+	sprite.position = setPosition(row, col);
+	return sprite;
+}
 
 function weightToWallSprite(weight) {
 	let r = rand(0,10);
