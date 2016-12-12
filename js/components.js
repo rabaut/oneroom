@@ -14,7 +14,7 @@ export const width = (width = 0) => ({ width });
 
 export const height = (height = 0) => ({ height });
 
-export const health = (health = 100) => ({ health });
+export const health = (health = 4) => ({ health });
 
 export const linearVelocity = (linearVelocity = [0,0]) => ({ linearVelocity });
 
@@ -23,3 +23,6 @@ export const angularVelocity = (angularVelocity = [0,0]) => ({ angularVelocity }
 export const collision = (collision = {})  => ({ collision });
 
 export const jump  = (jump={active: false, start: 0}) => ({jump});
+
+export const ai = (ai = {mode: 'pace', duration: 2500, currDir: 'right', currTime: -1}) => ({ ai });
+

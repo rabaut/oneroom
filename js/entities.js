@@ -97,8 +97,10 @@ export const creature = (row, col, type) => {
     ...Components.width(sprite.width),
     ...Components.height(sprite.height),
     ...Components.position([sprite.x, sprite.y]),
+    ...Components.linearVelocity(),
     ...Components.collision(),
-    ...Components.health(100)
+    ...Components.health(4),
+    ...Components.ai()
   };
   return entity;
 }

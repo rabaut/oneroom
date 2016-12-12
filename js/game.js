@@ -16,6 +16,8 @@ const shotSpeed = 300; //ms
 const gameActions = Object.keys(bindings.game);
 const gameActionsLength = gameActions.length;
 
+
+
 export default class Game {
   constructor() {
     this.entities = [];
@@ -140,6 +142,28 @@ export default class Game {
             }
           }
         }//Input
+
+        //AI
+        if(entityHasComponents(entity, ['ai'])) {
+          if (entity.ai.mode === 'pace') {
+            let now = new Date().getTime();
+            if (entity.ai.currTime === -1 || ((now - entity.ai.currTime) > entity.ai.duration)) {
+              entity.ai.currTime = now;
+              if (entity.ai.currDir === 'right') {
+                entity.ai.currDir = 'left';
+              }
+              else if (entity.ai.currDir === 'left') {
+                entity.ai.currDir = 'right';
+              }
+            }
+            if (entity.ai.currDir === 'right') {
+              entity.linearVelocity[0] = 1;
+            }
+            else if (entity.ai.currDir === 'left') {
+              entity.linearVelocity[0] = -1;
+            }
+          }
+        }
 
         //Physics
         if(entity.linearVelocity[0] !== 0 || entity.linearVelocity[1] !== 0) {
