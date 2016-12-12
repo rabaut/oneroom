@@ -13,15 +13,6 @@
   "author": "Sean Rabaut, Chad Grimaldi",
   "license": "MIT",
   "dependencies": {
-    "moment": "^2.14.1",
-    "ndarray": "^1.0.18",
-    "ndarray-pack": "^1.2.0",
-    "path": "^0.12.7",
-    "pixi.js": "^4.2.3",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
-    "stats.js": "^0.16.0",
-    "webpack": "^1.14.0",
     "babel-cli": "^6.10.1",
     "babel-core": "^6.9.1",
     "babel-loader": "^6.2.4",
@@ -37,11 +28,19 @@
     "html-webpack-plugin": "^2.19.0",
     "ify-loader": "^1.0.3",
     "json-loader": "^0.5.4",
+    "moment": "^2.14.1",
+    "ndarray": "^1.0.18",
+    "ndarray-pack": "^1.2.0",
+    "path": "^0.12.7",
+    "pixi.js": "^4.2.3",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
     "source-map-loader": "^0.1.5",
+    "stats.js": "^0.16.0",
     "style-loader": "^0.13.1",
     "transform-loader": "^0.2.3",
-    "url-loader": "^0.5.7"
+    "url-loader": "^0.5.7",
+    "webpack": "^1.14.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

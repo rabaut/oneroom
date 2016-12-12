@@ -54,6 +54,15 @@ export function item(row, col, theme, type) {
 	return sprite;
 }
 
+export function bullet(position) {
+	let id = PIXI.loader.resources['effects'].textures;
+
+	let sprite = new PIXI.Sprite(id['effect-orb-blue-1.png']);
+	sprite.position.x = position[0];
+	sprite.position.y = position[1];
+	return sprite;
+}
+
 export function creature(row, col, type, color) {
 	let id = PIXI.loader.resources['creatures'].textures;
 	let file = "creature-" + type + "-" + color + "-2.png";

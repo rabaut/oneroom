@@ -14,6 +14,8 @@ export const width = (width = 0) => ({ width });
 
 export const height = (height = 0) => ({ height });
 
+export const health = (health = 100) => ({ health });
+
 export const linearVelocity = (linearVelocity = [0,0]) => ({ linearVelocity });
 
 export const angularVelocity = (angularVelocity = [0,0]) => ({ angularVelocity });

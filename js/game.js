@@ -11,6 +11,8 @@ import * as Sprites            from './sprites';
 
 const speed = 1.6;
 
+const shotSpeed = 300; //ms
+
 const gameActions = Object.keys(bindings.game);
 const gameActionsLength = gameActions.length;
 
@@ -25,10 +27,11 @@ export default class Game {
     this.room = null;
     this.player = null;
 
-
     this.setupGame = this.setupGame.bind(this);
     this.update = this.update.bind(this);
     this.render = this.render.bind(this);
+
+    this.lastShot = 0;
 
     renderUI(<Root />, document.getElementById('ui'));
   }
@@ -39,6 +42,7 @@ export default class Game {
       .add('creatures', '../assets/textures/sheets/creatures.json')
       .add('world', '../assets/textures/sheets/world.json')
       .add('items', '../assets/textures/sheets/items.json')
+      .add('effects', '../assets/textures/sheets/effects.json')
       .load(this.setupGame);
   }
 
@@ -73,8 +77,8 @@ export default class Game {
     console.log('game started');
   }
 
-  createEntity(entityKey) {
-    let entities = Entities[entityKey]();
+  createEntity(entityKey, ...args) {
+    let entities = Entities[entityKey](...args);
     let length = entities.length;
     for(let e=0; e < length; e++) {
       let entity = entities[e];
@@ -101,9 +105,11 @@ export default class Game {
             if(this.keyboard.active(bindings.game[action])) {
               switch(action) {
                 case 'moveUp':
-                  entity.linearVelocity[1] = -1; break;
+                  entity.linearVelocity[1] = -1; 
+                  break;
                 case 'moveDown':
-                  entity.linearVelocity[1] = 1; break;
+                  entity.linearVelocity[1] = 1; 
+                  break;
                 case 'moveLeft':
                   entity.linearVelocity[0] = -1;
                   if(entityHasComponents(entity, ['sprite']) && entity.sprite.scale.x < 0) { 
@@ -117,14 +123,17 @@ export default class Game {
                   }
                   break;
                 case 'shootUp':
-                  console.log("SHOOT UP"); break;
+                  this.shoot(entity, 'up');
+                  break;
                 case 'shootDown':
-                  console.log("SHOOT DOWN"); break;
+                  this.shoot(entity, 'down');
+                  break;
                 case 'shootLeft':
-                  console.log("SHOOT LEFT"); break;
+                  this.shoot(entity, 'left');
+                  break;
                 case 'shootRight':
-                  console.log("SHOOT RIGHT"); break;
-                  
+                  this.shoot(entity, 'right');
+                  break;
                 default:
                   //Nothing
               }
@@ -153,7 +162,7 @@ export default class Game {
               colX = false;
               colY = false;
               let possibleCollidable = this.entities[n];
-              if(entityHasComponents(possibleCollidable, ['collision']) && possibleCollidable !== entity) {
+              if(this.collidable(entity, possibleCollidable)) {
                 entity.position[0] += deltaX;
                 if(this.collision(entity, possibleCollidable)) {
                   colX = true;
@@ -167,9 +176,26 @@ export default class Game {
                 }
                 entity.position[1] -= deltaY;
                 if (colX || colY) {
-                  if (possibleCollidable.type === 'item') {
+                  if (possibleCollidable.type === 'item' && entity.type === 'player') {
                     this.stage.removeChild(possibleCollidable.sprite);
                     this.entities = this.entities.filter(ent => ent !== possibleCollidable);
+                  }
+                  if(/*possibleCollidable.type === 'bullet' && entity.type === 'player'*/false) {
+                    this.stage.removeChild(possibleCollidable.sprite);
+                    this.entities = this.entities.filter(ent => ent !== possibleCollidable);
+                  }
+                  if(possibleCollidable.type === 'wall' && entity.type === 'bullet') {
+                    this.stage.removeChild(entity.sprite);
+                    this.entities = this.entities.filter(ent => ent !== entity);
+                  }
+                  if(possibleCollidable.type === 'creature' && entity.type === 'bullet') {
+                    this.stage.removeChild(entity.sprite);
+                    this.entities = this.entities.filter(ent => ent !== entity);
+                    possibleCollidable.health -= 1;
+                    if(possibleCollidable.health < 0) {
+                      this.stage.removeChild(possibleCollidable.sprite);
+                      this.entities = this.entities.filter(ent => ent !== possibleCollidable);
+                    }
                   }
                 }
               }
@@ -184,13 +210,34 @@ export default class Game {
           }
         }//Physics
 
-        entity.linearVelocity[0] = 0;
-        entity.linearVelocity[1] = 0;
+        if(entityHasComponents(entity, ['input', 'linearVelocity'])) {
+          entity.linearVelocity[0] = 0;
+          entity.linearVelocity[1] = 0;
+        }
       }//Bodies
     }
   }
 
-  
+  shoot(shooter, direction) {
+    let now = new Date().getTime();
+    if(now > this.lastShot) {
+      this.lastShot = now + shotSpeed;
+      this.createEntity('bullet', shooter.position, direction);
+    }
+  }
+
+  collidable(entity, possible) {
+    if(!entityHasComponents(possible, ['collision'])
+      || possible === entity
+      || entity.type === 'player' && possible.type === 'bullet'
+      || possible.type === 'player' && entity.type === 'bullet'
+      || possible.type === 'item' && entity.type === 'bullet'
+      || possible.type === 'bullet' && entity.type === 'bullet'
+    ) {
+      return false;
+    } 
+    return true;
+  }
 
   collision(a, b) {
     //x_overlaps = (a.left < b.right) && (a.right > b.left)

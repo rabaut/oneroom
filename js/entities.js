@@ -8,6 +8,8 @@ import Rooms                   from '../rooms/rooms.json';
 
 const TILE_SIZE = 24;
 
+const bulletSpeed = 5;
+
 export const room = () => {
   let roomContainer = [];
 
@@ -44,7 +46,7 @@ export const room = () => {
   return roomContainer;
 }
 
-const ground = (static_map, row, col, ground_theme) => {
+export const ground = (static_map, row, col, ground_theme) => {
   let sprite = Sprites.groundTile(static_map, row, col, ground_theme);
   let entity = {
     id: generateId(),
@@ -57,7 +59,7 @@ const ground = (static_map, row, col, ground_theme) => {
   return entity;
 }
 
-const wall = (static_map, row, col, wall_theme) => {
+export const wall = (static_map, row, col, wall_theme) => {
   let sprite = Sprites.wallTile(static_map, row, col, wall_theme);
   let entity = {
     id: generateId(),
@@ -71,7 +73,7 @@ const wall = (static_map, row, col, wall_theme) => {
   return entity;
 }
 
-const item = (row, col, type) => {
+export const item = (row, col, type) => {
   let actualType = convertItemType(type);
   let sprite = Sprites.item(row, col, getItemTheme(actualType), actualType);
   let entity = {
@@ -86,7 +88,7 @@ const item = (row, col, type) => {
   return entity;
 }
 
-const creature = (row, col, type) => {
+export const creature = (row, col, type) => {
   let sprite = Sprites.creature(row, col, type, getCreatureColor(type));
   let entity = {
     id: generateId(),
@@ -95,9 +97,43 @@ const creature = (row, col, type) => {
     ...Components.width(sprite.width),
     ...Components.height(sprite.height),
     ...Components.position([sprite.x, sprite.y]),
-    ...Components.collision()
+    ...Components.collision(),
+    ...Components.health(100)
   };
   return entity;
+}
+
+export const bullet = (emitterPosition, direction) => {
+  let velocity = [0,0];
+  let bulletPosition = [emitterPosition[0], emitterPosition[1]];
+
+  if(direction === 'left') {
+    velocity[0] = -bulletSpeed;
+    bulletPosition[0] -= 10;
+  } else if(direction === 'right') {
+    velocity[0] = bulletSpeed;
+    bulletPosition[0] += 10;
+  } else if(direction === 'up') {
+    velocity[1] = -bulletSpeed;
+    bulletPosition[1] -= 10;
+  } else if(direction === 'down') {
+    velocity[1] = bulletSpeed;
+    bulletPosition[1] += 10;
+  }
+
+  let sprite = Sprites.bullet(bulletPosition);
+  let entity = {
+    id: generateId(),
+    type: 'bullet',
+    ...Components.sprite(sprite),
+    ...Components.width(sprite.width),
+    ...Components.height(sprite.height),
+    ...Components.position(bulletPosition),
+    ...Components.linearVelocity(velocity),
+    ...Components.collision()
+  }
+
+  return [entity];
 }
 
 export const player = (stage) => {
@@ -115,7 +151,8 @@ export const player = (stage) => {
     ...Components.linearVelocity(),
     ...Components.angularVelocity(),
     ...Components.collision(),
-    ...Components.camera()
+    ...Components.camera(),
+    ...Components.health(100)
   };
   
   return [entity];

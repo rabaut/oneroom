@@ -10,7 +10,7 @@ export const bindings = {
     shootUp: 'ArrowUp',
     shootDown: 'ArrowDown',
     shootLeft: 'ArrowLeft',
-    shootRight: 'ArrowRight',
+    shootRight: 'ArrowRight'
   }
 }
 
