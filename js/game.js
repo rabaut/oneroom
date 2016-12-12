@@ -139,7 +139,7 @@ export default class Game {
                 entity.position[0] -= deltaX;
                 entity.position[1] += deltaY;
                 if(this.collision(entity, possibleCollidable)) {
-                  entity.position[1] -= deltaY;
+                  collisionY = true;
                 }
                 entity.position[1] -= deltaY;
               }
