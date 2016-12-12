@@ -8,6 +8,7 @@ export function player(position) {
   let textures = PIXI.loader.resources['creatures'].textures;
   const sprite = new PIXI.Sprite(textures['creature-player-default-1.png']);
   sprite.anchor.y = 0.1;
+  sprite.anchor.x = 0.5;
   sprite.position.x = position[0];
   sprite.position.y = position[1];
   return sprite;
