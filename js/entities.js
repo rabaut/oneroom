@@ -43,7 +43,10 @@ const ground = (static_map, row, col, ground_theme) => {
   let entity = {
     id: generateId(),
     type: 'ground',
-    ...Components.sprite(sprite)
+    ...Components.sprite(sprite),
+    ...Components.width(sprite.width),
+    ...Components.height(sprite.height),
+    ...Components.position([sprite.x, sprite.y])
   };
   return entity;
 }
@@ -54,7 +57,10 @@ const wall = (static_map, row, col, wall_theme) => {
     id: generateId(),
     type: 'wall',
     ...Components.collision(),
-    ...Components.sprite(sprite)
+    ...Components.sprite(sprite),
+    ...Components.width(sprite.width),
+    ...Components.height(sprite.height),
+    ...Components.position([sprite.x, sprite.y])
   };
   return entity;
 }
@@ -65,20 +71,25 @@ const item = (row, col, type) => {
   let entity = {
     id: generateId(),
     type: 'item',
-    ...Components.collision(),
-    ...Components.sprite(sprite)
+    ...Components.sprite(sprite),
+    ...Components.width(sprite.width),
+    ...Components.height(sprite.height),
+    ...Components.position([sprite.x, sprite.y]),
+    ...Components.collision()
   };
   return entity;
 }
 
 export const player = (stage) => {
-  const startingPosition = [10*TILE_SIZE,11*TILE_SIZE];
+  const startingPosition = [10*TILE_SIZE, 11*TILE_SIZE];
   let sprite = Sprites.player(startingPosition);
   let entity = {
     id: generateId(),
     type: 'player',
     ...Components.input(),
     ...Components.sprite(sprite),
+    ...Components.width(sprite.width-5),
+    ...Components.height(sprite.height-5),
     ...Components.position(startingPosition),
     ...Components.rotation(),
     ...Components.linearVelocity(),

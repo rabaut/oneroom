@@ -10,6 +10,10 @@ export const position = (position = [0,0]) => ({ position });
 
 export const rotation = (rotation = [0,0]) => ({ rotation });
 
+export const width = (width = 0) => ({ width });
+
+export const height = (height = 0) => ({ height });
+
 export const linearVelocity = (linearVelocity = [0,0]) => ({ linearVelocity });
 
 export const angularVelocity = (angularVelocity = [0,0]) => ({ angularVelocity });

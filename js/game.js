@@ -8,11 +8,8 @@ import Root                    from './ui/root';
 import Keyboard, { bindings}   from './keyboard';
 import * as Entities           from './entities';
 import * as Sprites            from './sprites';
-import Bump from './bump';
 
-var b = new Bump();
-
-const speed = 5;
+const speed = 1.6;
 
 const gameActions = Object.keys(bindings.game);
 const gameActionsLength = gameActions.length;
@@ -103,13 +100,13 @@ export default class Game {
             if(this.keyboard.active(bindings.game[action])) {
               switch(action) {
                 case 'moveUp':
-                  entity.linearVelocity[1] = -speed; break;
+                  entity.linearVelocity[1] = -1; break;
                 case 'moveDown':
-                  entity.linearVelocity[1] = speed; break;
+                  entity.linearVelocity[1] = 1; break;
                 case 'moveLeft':
-                  entity.linearVelocity[0] = -speed; break;
+                  entity.linearVelocity[0] = -1; break;
                 case 'moveRight':
-                  entity.linearVelocity[0] = speed; break;
+                  entity.linearVelocity[0] = 1; break;
                 default:
                   //Nothing
               }
@@ -124,42 +121,37 @@ export default class Game {
             (entity.linearVelocity[1] * entity.linearVelocity[1])
           );
 
-          let nextX = entity.position[0] + (entity.linearVelocity[0] / s);
-          let nextY = entity.position[1] + (entity.linearVelocity[1] / s);
+          let deltaX = (entity.linearVelocity[0] / s) * speed;
+          let deltaY = (entity.linearVelocity[1] / s) * speed;
+
+          let collisionX = false;
+          let collisionY = false;
 
           //Collision
-          if(entityHasComponents(entity, ['collision', 'sprite'])) {
-            let hit = '';
+          if(entityHasComponents(entity, ['collision', 'width', 'height', 'position'])) {
             for(let n=0; n < length; n++) {
               let possibleCollidable = this.entities[n];
               if(entityHasComponents(possibleCollidable, ['collision']) && possibleCollidable !== entity) {
-                entity.sprite.position.x = nextX;
-                entity.sprite.position.y = nextY;
-                hit = b.rectangleCollision(possibleCollidable.sprite, entity.sprite);
-                break;
+                entity.position[0] += deltaX;
+                if(this.collision(entity, possibleCollidable)) {
+                  collisionX = true;
+                }
+                entity.position[0] -= deltaX;
+                entity.position[1] += deltaY;
+                if(this.collision(entity, possibleCollidable)) {
+                  entity.position[1] -= deltaY;
+                }
+                entity.position[1] -= deltaY;
               }
             }
-            if(hit === 'left' || hit === 'right') {
-              entity.position[1] = nextY;
-            }
-            else if(hit === 'top' || hit === 'bottom') {
-              entity.position[0] = nextX;
-            } else {
-              entity.position[0] = nextX;
-              entity.position[1] = nextY;
-            }
           }//Collision
-          else {
-            entity.position[0] = nextX;
-            entity.position[1] = nextY;
+
+          if(!collisionX) {
+            entity.position[0] += deltaX;
           }
-
-          //Sprites
-          if(entityHasComponents(entity, ['sprite'])) {
-              entity.sprite.position.x = entity.position[0];
-              entity.sprite.position.y = entity.position[1];
-          }//Sprites
-
+          if(!collisionY) {
+            entity.position[1] += deltaY;
+          }
         }//Physics
 
         entity.linearVelocity[0] = 0;
@@ -168,16 +160,35 @@ export default class Game {
     }
   }
 
+  collision(a, b) {
+    //x_overlaps = (a.left < b.right) && (a.right > b.left)
+    let x_overlaps = (a.position[0] - (a.width/2) < b.position[0] + (b.width/2)) && (a.position[0] + (a.width/2) > b.position[0] - (b.width/2));
+    
+    //y_overlaps = (a.top < b.bottom) && (a.bottom > b.top)
+    let y_overlaps = (a.position[1] - (a.height/2) < b.position[1] + (b.height/2)) && (a.position[1] + (a.height/2) > b.position[1] - (b.height/2));
+    
+
+    return x_overlaps && y_overlaps;
+  }
+
   render() {
     requestAnimationFrame(this.render);
-    for (var i = this.stage.children.length - 1; i >= 0; i--) {  
-      this.stage.removeChild(this.stage.children[i]);
-    }
-    this.entities.forEach(entity => {
-      if(entityHasComponents(entity, ['sprite'])) {
-        this.stage.addChild(entity.sprite);
+    let length = this.entities.length;
+    for(let e=0; e < length; e++) {
+      let entity = this.entities[e];
+      if(entityHasComponents(entity, ['sprite', 'position'])) {
+        entity.sprite.x = entity.position[0];
+        entity.sprite.y = entity.position[1];
       }
-    });
+    }
+    // for (var i = this.stage.children.length - 1; i >= 0; i--) {  
+    //   this.stage.removeChild(this.stage.children[i]);
+    // }
+    // this.entities.forEach(entity => {
+    //   if(entityHasComponents(entity, ['sprite'])) {
+    //     this.stage.addChild(entity.sprite);
+    //   }
+    // });
     this.renderer.render(this.stage);
   }
 }
