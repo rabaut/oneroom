@@ -8,18 +8,11 @@ const defaults = {
   }
 };
 
-function gameInputs() {
-  return Object.keys(bindings.game).reduce((memo, action) => ({
-    ...memo, 
-    [action]: { key: bindings.game[action], active: false } 
-  }), {});
-}
-
 export const sprite = (sprite = {}) => ({ sprite })
 
-export const input  = (inputs = gameInputs()) => ({ inputs })
+export const input  = (input = null) => ({ input })
 
-export const camera = (camera = {}) => ({ camera })
+export const camera = (camera = null) => ({ camera })
 
 export const position = (position = [0,0]) => ({ position });
 

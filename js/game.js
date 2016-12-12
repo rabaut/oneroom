@@ -9,7 +9,7 @@ import Keyboard                from './keyboard';
 import * as Entities           from './entities';
 import * as Sprites            from './sprites';
 import { 
-  Input, Physics, Collision, Movement
+  Movement, Physics, Collision
 } from './systems';
 
 export default class Game {
@@ -83,8 +83,7 @@ export default class Game {
   update() {
     setTimeout(this.update, 16);
     this.stats.game.begin();
-    this.entities = Input.update(this.entities, this.keyboard);
-    this.entities = Movement.update(this.entities);
+    this.entities = Movement.update(this.entities, this.keyboard);
     this.entities = Physics.update(this.entities);
     //Collision.update(this.store.dispatch, Object.values(entities));
     this.stats.game.end();

@@ -6,6 +6,8 @@ import TYPES           from './types';
 import { entityHasComponents } from './utils';
 import Rooms                   from '../rooms/rooms.json';
 
+const TILE_SIZE = 24;
+
 export const room = () => {
   let roomContainer = [];
 
@@ -67,7 +69,7 @@ const item = (row, col, type) => {
 }
 
 export const player = (stage) => {
-  const startingPosition = [10,11];
+  const startingPosition = [10*TILE_SIZE,11*TILE_SIZE];
   let sprite = Sprites.player(startingPosition);
   let entity = {
     id: generateId(),

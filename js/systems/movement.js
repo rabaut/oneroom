@@ -1,36 +1,28 @@
 import { entityHasComponents } from '../utils';
+import { bindings } from '../keyboard';
 
-const acceleration = 2.1;
+const acceleration = 1;
 const maxSpeed = 9;
 
-const components = ['inputs', 'linearVelocity', 'angularVelocity'];
+const components = ['input', 'linearVelocity', 'angularVelocity'];
 
-export function update(entities) {
+export function update(entities, keyboard) {
   return entities.map(entity => {
     if(entityHasComponents(entity, components)) {
-      let inputs = entity.inputs;
-      Object.keys(inputs).forEach(action => {
-        if(!inputs[action].active) { return; }
-        let linearAcceleration = [0,0];
+      Object.keys(bindings.game).forEach(action => {
+        if(!keyboard.active(bindings.game[action])) { return; }
         if(action === 'moveUp' && entity.linearVelocity[1] > -maxSpeed) {
-          //linearAcceleration[1] = -acceleration;
           entity.linearVelocity[1] -= acceleration;
         }
         if(action === 'moveDown' && entity.linearVelocity[1] < maxSpeed) {
-          //linearAcceleration[1] = acceleration;
           entity.linearVelocity[1] += acceleration;
         }
         if(action === 'moveLeft' && entity.linearVelocity[0] > -maxSpeed) {
-          //linearAcceleration[0] = -acceleration;
           entity.linearVelocity[0] -= acceleration;
         }
         if(action === 'moveRight' && entity.linearVelocity[0] < maxSpeed) {
-          //linearAcceleration[0] = acceleration;
           entity.linearVelocity[0] += acceleration;
         }
-
-        //entity.linearVelocity[0] += linearAcceleration[0];
-        //entity.linearVelocity[1] += linearAcceleration[1];
       });
     }
     return entity;
