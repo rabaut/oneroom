@@ -75,18 +75,19 @@ export default class Game {
 
   createEntity(entityKey) {
     let entities = Entities[entityKey]();
-    entities.forEach(entity => {
+    let length = entities.length;
+    for(let e=0; e < length; e++) {
+      let entity = entities[e];
       if(entityHasComponents(entity, ['sprite'])) {
         this.stage.addChild(entity.sprite);
       }
       this.entities.push(entity);
-    });
+    }
   }
 
   update() {
     setTimeout(this.update, 16);
-    let length = this.entities.length;
-    for(let e=0; e < length; e++) {
+    for(let e=0; e < this.entities.length; e++) {
       let entity = this.entities[e];
 
       //Bodies
@@ -126,22 +127,34 @@ export default class Game {
 
           let collisionX = false;
           let collisionY = false;
+          let colY = false;
+          let colX = false;
 
           //Collision
           if(entityHasComponents(entity, ['collision', 'width', 'height', 'position'])) {
-            for(let n=0; n < length; n++) {
+            for(let n=0; n < this.entities.length; n++) {
+              colX = false;
+              colY = false;
               let possibleCollidable = this.entities[n];
               if(entityHasComponents(possibleCollidable, ['collision']) && possibleCollidable !== entity) {
                 entity.position[0] += deltaX;
                 if(this.collision(entity, possibleCollidable)) {
+                  colX = true;
                   collisionX = true;
                 }
                 entity.position[0] -= deltaX;
                 entity.position[1] += deltaY;
                 if(this.collision(entity, possibleCollidable)) {
+                  colY = true;
                   collisionY = true;
                 }
                 entity.position[1] -= deltaY;
+                if (colX || colY) {
+                  if (possibleCollidable.type === 'item') {
+                    this.stage.removeChild(possibleCollidable.sprite);
+                    this.entities = this.entities.filter(ent => ent !== possibleCollidable);
+                  }
+                }
               }
             }
           }//Collision
@@ -159,6 +172,8 @@ export default class Game {
       }//Bodies
     }
   }
+
+  
 
   collision(a, b) {
     //x_overlaps = (a.left < b.right) && (a.right > b.left)
