@@ -1,8 +1,8 @@
 import { entityHasComponents } from '../utils';
 import { bindings } from '../keyboard';
 
-const acceleration = 1;
-const maxSpeed = 9;
+const acceleration = .1;
+const maxSpeed = 1;
 
 const components = ['input', 'linearVelocity', 'angularVelocity'];
 
