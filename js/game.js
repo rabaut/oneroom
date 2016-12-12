@@ -116,6 +116,15 @@ export default class Game {
                     entity.sprite.scale.x = -1; 
                   }
                   break;
+                case 'shootUp':
+                  console.log("SHOOT UP"); break;
+                case 'shootDown':
+                  console.log("SHOOT DOWN"); break;
+                case 'shootLeft':
+                  console.log("SHOOT LEFT"); break;
+                case 'shootRight':
+                  console.log("SHOOT RIGHT"); break;
+                  
                 default:
                   //Nothing
               }
