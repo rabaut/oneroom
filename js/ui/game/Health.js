@@ -5,12 +5,18 @@ export default class Health extends Component {
 
   static propTypes = { health: PropTypes.number };
 
+  renderHearts() {
+    let hearts = [];
+    for(let i=0; i < this.props.health; i++) {
+      hearts.push(<img className="heart" />);
+    }
+    return hearts;
+  }
+
   render() {
     return (
       <div className="container">
-        <div className="health" style={{width: `${this.props.health}%`}}>
-          {this.props.health}/100
-        </div>
+        {this.renderHearts()}
       </div>
     );
   }

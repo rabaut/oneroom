@@ -20,6 +20,7 @@ export default class Game extends Component {
   render() {
     return (
       <div>
+        <Health health={this.props.ui.health} />
       </div>
     );
   }

@@ -38,8 +38,7 @@ export default class Game {
     };
 
     this.lastShot = 0;
-
-    renderUI(<Root ui={this.ui} />, document.getElementById('ui'));
+    renderUI(<Root ui={this.ui} />, document.getElementsByClassName('ui')[0]);
   }
 
   loadGame() {
@@ -65,8 +64,8 @@ export default class Game {
 
   setupRenderer() {
     PIXI.settings.SCALE_MODE = Pixi.SCALE_MODES.NEAREST;
-    const renderer = new Pixi.WebGLRenderer(800, 800);
-    document.getElementById('game').appendChild(renderer.view);
+    const renderer = new Pixi.WebGLRenderer(576, 432);
+    document.getElementsByClassName('game')[0].appendChild(renderer.view);
     return renderer;
   }
 
