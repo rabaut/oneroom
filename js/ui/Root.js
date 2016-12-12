@@ -4,7 +4,7 @@ import Game                 from './game/game';
 
 export default class Root extends Component {
   render() {
-    if(true) { return (<Game />); }
+    if(true) { return (<Game {...this.props} />); }
     return (<Welcome />);
   }
 }
