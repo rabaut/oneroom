@@ -56,7 +56,7 @@ export function item(row, col, theme, type) {
 
 export function creature(row, col, type, color) {
 	let id = PIXI.loader.resources['creatures'].textures;
-	let file = "creature-" + type + "-" + color + "-1.png";
+	let file = "creature-" + type + "-" + color + "-2.png";
 	let sprite = new PIXI.Sprite(id[file]);
 	sprite.position = setPosition(row, col);
 	return sprite;
