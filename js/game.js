@@ -222,7 +222,7 @@ export default class Game {
     let now = new Date().getTime();
     if(now > this.lastShot) {
       this.lastShot = now + shotSpeed;
-      this.createEntity('bullet', shooter.position, direction);
+      this.createEntity('bullet', shooter, direction);
     }
   }
 

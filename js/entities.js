@@ -103,9 +103,9 @@ export const creature = (row, col, type) => {
   return entity;
 }
 
-export const bullet = (emitterPosition, direction) => {
-  let velocity = [0,0];
-  let bulletPosition = [emitterPosition[0], emitterPosition[1]];
+export const bullet = (shooter, direction) => {
+  let velocity = [shooter.linearVelocity[0],shooter.linearVelocity[1]];
+  let bulletPosition = [shooter.position[0], shooter.position[1]];
 
   if(direction === 'left') {
     velocity[0] = -bulletSpeed;
