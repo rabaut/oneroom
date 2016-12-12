@@ -1,13 +1,5 @@
 import { bindings } from './keyboard';
 
-const defaults = {
-  collision: {
-    left: false, right: false,
-    back: false, front: false,
-    top: false, bottom: false
-  }
-};
-
 export const sprite = (sprite = {}) => ({ sprite })
 
 export const input  = (input = null) => ({ input })
@@ -22,6 +14,6 @@ export const linearVelocity = (linearVelocity = [0,0]) => ({ linearVelocity });
 
 export const angularVelocity = (angularVelocity = [0,0]) => ({ angularVelocity });
 
-export const collision = (collision = defaults.collsion)  => ({ collision });
+export const collision = (collision = {})  => ({ collision });
 
 export const jump  = (jump={active: false, start: 0}) => ({jump});

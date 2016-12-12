@@ -42,6 +42,7 @@ const ground = (static_map, row, col, ground_theme) => {
   let sprite = Sprites.groundTile(static_map, row, col, ground_theme);
   let entity = {
     id: generateId(),
+    type: 'ground',
     ...Components.sprite(sprite)
   };
   return entity;
@@ -51,6 +52,7 @@ const wall = (static_map, row, col, wall_theme) => {
   let sprite = Sprites.wallTile(static_map, row, col, wall_theme);
   let entity = {
     id: generateId(),
+    type: 'wall',
     ...Components.collision(),
     ...Components.sprite(sprite)
   };
@@ -62,6 +64,7 @@ const item = (row, col, type) => {
   let sprite = Sprites.item(row, col, getItemTheme(actualType), actualType);
   let entity = {
     id: generateId(),
+    type: 'item',
     ...Components.collision(),
     ...Components.sprite(sprite)
   };
@@ -73,6 +76,7 @@ export const player = (stage) => {
   let sprite = Sprites.player(startingPosition);
   let entity = {
     id: generateId(),
+    type: 'player',
     ...Components.input(),
     ...Components.sprite(sprite),
     ...Components.position(startingPosition),

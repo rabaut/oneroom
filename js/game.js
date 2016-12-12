@@ -5,12 +5,14 @@ import path                    from 'path';
 import { render as renderUI }  from 'react-dom';
 import { entityHasComponents } from './utils';
 import Root                    from './ui/root';
-import Keyboard                from './keyboard';
+import Keyboard, { bindings}   from './keyboard';
 import * as Entities           from './entities';
 import * as Sprites            from './sprites';
-import { 
-  Movement, Physics, Collision
-} from './systems';
+import Bump from './bump';
+
+var b = new Bump();
+
+const speed = 5;
 
 export default class Game {
   constructor() {
@@ -82,11 +84,74 @@ export default class Game {
 
   update() {
     setTimeout(this.update, 16);
-    this.stats.game.begin();
-    this.entities = Movement.update(this.entities, this.keyboard);
-    this.entities = Physics.update(this.entities);
-    //Collision.update(this.store.dispatch, Object.values(entities));
-    this.stats.game.end();
+    let length = this.entities.length;
+    for(let i=0; i < length; i++) {
+      let entity = this.entities[i];
+
+      // Movement
+      if(entityHasComponents(entity, ['input', 'linearVelocity'])) {
+        Object.keys(bindings.game).forEach(action => {
+          entity.linearVelocity[0] = 0;
+          entity.linearVelocity[1] = 0;
+          if(!this.keyboard.active(bindings.game[action])) { return; }
+          if(action === 'moveUp') {
+            entity.linearVelocity[1] = -speed;
+          }
+          if(action === 'moveDown') {
+            entity.linearVelocity[1] = speed;
+          }
+          if(action === 'moveLeft') {
+            entity.linearVelocity[0] = -speed;
+          }
+          if(action === 'moveRight') {
+            entity.linearVelocity[0] = speed;
+          }
+        });
+      }
+
+      // Physics
+      if(entityHasComponents(entity, ['linearVelocity', 'position'])) {
+        const { linearVelocity } = entity;
+        if(linearVelocity[0] !== 0 || linearVelocity[1] !== 0) {
+          let s = Math.sqrt((linearVelocity[0] * linearVelocity[0]) + (linearVelocity[1] * linearVelocity[1]));
+
+          linearVelocity[0] /= s;
+          linearVelocity[1] /= s;
+
+          let nextX = entity.position[0] + linearVelocity[0];
+          let nextY = entity.position[1] + linearVelocity[1];
+
+          if(entityHasComponents(entity, ['collision', 'sprite'])) {
+            for(let n=0; n < length; n++) {
+              let possibleCollidable = this.entities[n];
+              if(possibleCollidable.collision && possibleCollidable !== entity) {
+                entity.sprite.position.x = nextX;
+                entity.sprite.position.y = nextY;
+                switch(b.rectangleCollision(possibleCollidable.sprite, entity.sprite)) {
+                  case 'left':
+                  case 'right':
+                    entity.position[1] = nextY; break;
+                  case 'top':
+                  case 'bottom':
+                    entity.position[0] = nextX; break;
+                  default:
+                    entity.position[0] = nextX;
+                    entity.position[1] = nextY;
+                }
+              }
+            }
+          }
+          else {
+            entity.position[0] = nextX;
+            entity.position[1] = nextY;
+          }
+        }
+        if(entityHasComponents(entity, ['sprite'])) {
+          entity.sprite.position.x = entity.position[0];
+          entity.sprite.position.y = entity.position[1];
+        }
+      }
+    }
   }
 
   render() {
