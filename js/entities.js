@@ -86,7 +86,7 @@ export const player = (stage) => {
     ...Components.collision(),
     ...Components.camera()
   };
-
+  
   return [entity];
 };
 

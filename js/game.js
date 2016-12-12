@@ -14,6 +14,9 @@ var b = new Bump();
 
 const speed = 5;
 
+const gameActions = Object.keys(bindings.game);
+const gameActionsLength = gameActions.length;
+
 export default class Game {
   constructor() {
     this.entities = [];
@@ -24,6 +27,7 @@ export default class Game {
 
     this.room = null;
     this.player = null;
+
 
     this.setupGame = this.setupGame.bind(this);
     this.update = this.update.bind(this);
@@ -85,72 +89,82 @@ export default class Game {
   update() {
     setTimeout(this.update, 16);
     let length = this.entities.length;
-    for(let i=0; i < length; i++) {
-      let entity = this.entities[i];
+    for(let e=0; e < length; e++) {
+      let entity = this.entities[e];
 
-      // Movement
-      if(entityHasComponents(entity, ['input', 'linearVelocity'])) {
-        Object.keys(bindings.game).forEach(action => {
-          entity.linearVelocity[0] = 0;
-          entity.linearVelocity[1] = 0;
-          if(!this.keyboard.active(bindings.game[action])) { return; }
-          if(action === 'moveUp') {
-            entity.linearVelocity[1] = -speed;
-          }
-          if(action === 'moveDown') {
-            entity.linearVelocity[1] = speed;
-          }
-          if(action === 'moveLeft') {
-            entity.linearVelocity[0] = -speed;
-          }
-          if(action === 'moveRight') {
-            entity.linearVelocity[0] = speed;
-          }
-        });
-      }
-
-      // Physics
+      //Bodies
       if(entityHasComponents(entity, ['linearVelocity', 'position'])) {
-        const { linearVelocity } = entity;
-        if(linearVelocity[0] !== 0 || linearVelocity[1] !== 0) {
-          let s = Math.sqrt((linearVelocity[0] * linearVelocity[0]) + (linearVelocity[1] * linearVelocity[1]));
 
-          linearVelocity[0] /= s;
-          linearVelocity[1] /= s;
+        //Input
+        if(entityHasComponents(entity, ['input'])) {
+          for(let a=0, action = ''; a < gameActionsLength; a++) {
+            action = gameActions[a];
 
-          let nextX = entity.position[0] + linearVelocity[0];
-          let nextY = entity.position[1] + linearVelocity[1];
-
-          if(entityHasComponents(entity, ['collision', 'sprite'])) {
-            for(let n=0; n < length; n++) {
-              let possibleCollidable = this.entities[n];
-              if(possibleCollidable.collision && possibleCollidable !== entity) {
-                entity.sprite.position.x = nextX;
-                entity.sprite.position.y = nextY;
-                switch(b.rectangleCollision(possibleCollidable.sprite, entity.sprite)) {
-                  case 'left':
-                  case 'right':
-                    entity.position[1] = nextY; break;
-                  case 'top':
-                  case 'bottom':
-                    entity.position[0] = nextX; break;
-                  default:
-                    entity.position[0] = nextX;
-                    entity.position[1] = nextY;
-                }
+            if(this.keyboard.active(bindings.game[action])) {
+              switch(action) {
+                case 'moveUp':
+                  entity.linearVelocity[1] = -speed; break;
+                case 'moveDown':
+                  entity.linearVelocity[1] = speed; break;
+                case 'moveLeft':
+                  entity.linearVelocity[0] = -speed; break;
+                case 'moveRight':
+                  entity.linearVelocity[0] = speed; break;
+                default:
+                  //Nothing
               }
             }
           }
+        }//Input
+
+        //Physics
+        if(entity.linearVelocity[0] !== 0 || entity.linearVelocity[1] !== 0) {
+          let s = Math.sqrt(
+            (entity.linearVelocity[0] * entity.linearVelocity[0]) + 
+            (entity.linearVelocity[1] * entity.linearVelocity[1])
+          );
+
+          let nextX = entity.position[0] + (entity.linearVelocity[0] / s);
+          let nextY = entity.position[1] + (entity.linearVelocity[1] / s);
+
+          //Collision
+          if(entityHasComponents(entity, ['collision', 'sprite'])) {
+            let hit = '';
+            for(let n=0; n < length; n++) {
+              let possibleCollidable = this.entities[n];
+              if(entityHasComponents(possibleCollidable, ['collision']) && possibleCollidable !== entity) {
+                entity.sprite.position.x = nextX;
+                entity.sprite.position.y = nextY;
+                hit = b.rectangleCollision(possibleCollidable.sprite, entity.sprite);
+                break;
+              }
+            }
+            if(hit === 'left' || hit === 'right') {
+              entity.position[1] = nextY;
+            }
+            else if(hit === 'top' || hit === 'bottom') {
+              entity.position[0] = nextX;
+            } else {
+              entity.position[0] = nextX;
+              entity.position[1] = nextY;
+            }
+          }//Collision
           else {
             entity.position[0] = nextX;
             entity.position[1] = nextY;
           }
-        }
-        if(entityHasComponents(entity, ['sprite'])) {
-          entity.sprite.position.x = entity.position[0];
-          entity.sprite.position.y = entity.position[1];
-        }
-      }
+
+          //Sprites
+          if(entityHasComponents(entity, ['sprite'])) {
+              entity.sprite.position.x = entity.position[0];
+              entity.sprite.position.y = entity.position[1];
+          }//Sprites
+
+        }//Physics
+
+        entity.linearVelocity[0] = 0;
+        entity.linearVelocity[1] = 0;
+      }//Bodies
     }
   }
 
