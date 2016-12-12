@@ -31,9 +31,13 @@ export default class Game {
     this.update = this.update.bind(this);
     this.render = this.render.bind(this);
 
+    this.ui = {
+      health: 100
+    };
+
     this.lastShot = 0;
 
-    renderUI(<Root />, document.getElementById('ui'));
+    renderUI(<Root ui={this.ui} />, document.getElementById('ui'));
   }
 
   loadGame() {
@@ -197,6 +201,20 @@ export default class Game {
                       this.entities = this.entities.filter(ent => ent !== possibleCollidable);
                     }
                   }
+                  if(possibleCollidable.type === 'creature' && entity.type === 'player') {
+                    entity.health -= this.updatePlayerHealth();
+                    if(entity.health < 0) {
+                      this.stage.removeChild(entity.sprite);
+                      this.entities = this.entities.filter(ent => ent !== entity);
+                    }
+                  }
+                  if(possibleCollidable.type === 'player' && entity.type === 'creature') {
+                    possibleCollidable.health -= this.updatePlayerHealth();
+                    if(possibleCollidable.health < 0) {
+                      this.stage.removeChild(possibleCollidable.sprite);
+                      this.entities = this.entities.filter(ent => ent !== possibleCollidable);
+                    }
+                  }
                 }
               }
             }
@@ -216,6 +234,11 @@ export default class Game {
         }
       }//Bodies
     }
+  }
+
+  updatePlayerHealth() {
+    this.ui.health -= 10;
+    return 10;
   }
 
   shoot(shooter, direction) {
