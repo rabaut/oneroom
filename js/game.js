@@ -105,9 +105,17 @@ export default class Game {
                 case 'moveDown':
                   entity.linearVelocity[1] = 1; break;
                 case 'moveLeft':
-                  entity.linearVelocity[0] = -1; break;
+                  entity.linearVelocity[0] = -1;
+                  if(entityHasComponents(entity, ['sprite']) && entity.sprite.scale.x < 0) { 
+                    entity.sprite.scale.x = 1; 
+                  }
+                  break;
                 case 'moveRight':
-                  entity.linearVelocity[0] = 1; break;
+                  entity.linearVelocity[0] = 1;
+                  if(entityHasComponents(entity, ['sprite']) && entity.sprite.scale.x > 0) {
+                    entity.sprite.scale.x = -1; 
+                  }
+                  break;
                 case 'shootUp':
                   console.log("SHOOT UP"); break;
                 case 'shootDown':
@@ -116,6 +124,7 @@ export default class Game {
                   console.log("SHOOT LEFT"); break;
                 case 'shootRight':
                   console.log("SHOOT RIGHT"); break;
+                  
                 default:
                   //Nothing
               }
